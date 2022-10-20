@@ -52,8 +52,12 @@ export abstract class Persona {
         this.estado = estado;
     }
 
-    public setCursos(cursos: number[]) : void{
+    public setCursos?(cursos: number[]) : void{
         this.cursos = cursos;
+    }
+
+    public pushCurso?(idCurso : number):void {
+        this.cursos.push(idCurso);
     }
 
 }

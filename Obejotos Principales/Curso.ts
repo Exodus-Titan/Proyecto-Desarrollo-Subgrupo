@@ -1,5 +1,6 @@
 import { Estado_curso_Leccion } from "Tipos de Datos/enumeradoEstados";
 import { ICursos_Y_Lecciones } from "./ICursos_Y_Lecciones";
+import { Leccion } from "./Leccion";
 
 class Curso implements ICursos_Y_Lecciones{
 
@@ -11,6 +12,7 @@ class Curso implements ICursos_Y_Lecciones{
     private profesor : number; // Es el id del prof que dicta el curso
     private estudiantes_inscritos : number[]; //Es un arrat con el id de cada estudiante inscritp en el curso 
     private estado : Estado_curso_Leccion
+    private lecciones : Leccion[];
 
     public constructor(id: number, titulo: string, descripcion : string, categoria : string, palabras_clave : string[], profesor : number){
         this.id = id;   
