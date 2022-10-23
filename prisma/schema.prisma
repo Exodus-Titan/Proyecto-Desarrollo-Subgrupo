@@ -11,19 +11,12 @@ datasource db {
 }
 
 model Usuario {
-  id             Int      @id @default(autoincrement())
-  nombre_usuario String   @unique
-  email          String   @unique
+  id             Int     @id @default(autoincrement())
+  nombre_usuario String  @unique
+  email          String  @unique
   clave          String
-  persona        Persona?
-}
-
-model Persona {
-  id         Int     @id @default(autoincrement())
-  nombre     String
-  cursos     Int[]
-  estado     Boolean @default(false)
-  tipo       String //EStudiante, Profesor o Administrador, pero como tienen los mismos atributos no hay porque diferenciarlos en la base de datos
-  usuario    Usuario @relation(fields: [id_usuario], references: [id])
-  id_usuario Int     @unique
+  nombre         String
+  cursos         Int[]
+  estado         Boolean @default(false)
+  tipo           String //Estudiante, Profesor o Administrador, pero como tienen los mismos atributos no hay porque diferenciarlos en la base de datos
 }

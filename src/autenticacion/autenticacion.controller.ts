@@ -1,6 +1,6 @@
 import { Controller, Post, Body } from "@nestjs/common";
 import { servicioAutenticacion } from "./autenticacion.service";
-import { Iregistro } from "./interfaces para las requests";
+import { Registro } from "./objetos para las requests";
 
 
 @Controller('autenticacion')
@@ -9,9 +9,9 @@ export class controladorAutenticacion {
     constructor(private servicioAutenticacion : servicioAutenticacion){}
 
     @Post('registro')
-    registro(@Body() dto : Iregistro) {
+    registro(@Body() dto : Registro) {
         console.groupCollapsed({dto,})
-        return this.servicioAutenticacion.registro();
+        return this.servicioAutenticacion.registro(dto);
     };
 
     @Post('inicioSesion')
