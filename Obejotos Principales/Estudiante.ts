@@ -1,12 +1,5 @@
-import { Persona } from "./Persona";
+import { Usuario } from "./Usuario";
 
-class Estudiante extends Persona {
-
-    public constructor(id: number, nombre: string ){
-        let cursos : number[];
-        super(id, nombre);
-        this.setCursos(cursos);
-    }
-
+export class Estudiante extends Usuario {
     
 }

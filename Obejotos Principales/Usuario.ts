@@ -1,17 +1,23 @@
-import { Persona } from "./Persona";
+import { Curso } from "./Curso";
+import { Estado_Usuario } from "./Estado_Usuario";
+import { Suscriptor } from "./Suscriptor";
 
-class Usuario{
+export abstract class Usuario implements Suscriptor{
     id : number 
     nombre_usuario : string;
     email : string; //Hacer un campo de tipo email 
     clave : string;
-    persona : Persona;
+    cursos_inscritos : Curso[] = [];
+    estado : Estado_Usuario;
 
-    public constructor (id : number, nombre_usuario : string, email : string, clave : string, persona: Persona){
+    public constructor (id : number, nombre_usuario : string, email : string, clave : string, estado: Estado_Usuario){
         this.id = id;
         this.nombre_usuario = nombre_usuario;
         this.email = email;
         this.clave = clave;
-        this.persona = persona;
+        this.estado = estado;
+    }
+    actualizar(): void {
+
     }
 }
