@@ -57,4 +57,6 @@ export class servicioAutenticacion{
         const usuarioAborrar = await this.base.usuario.delete({where : {nombre_usuario : dto.nombre_usuario_a_borrar}})
         return usuarioAborrar
     }
+
+    //async modificarEmail(dto : )
 }
