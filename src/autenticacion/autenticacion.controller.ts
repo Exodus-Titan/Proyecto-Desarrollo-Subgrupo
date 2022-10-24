@@ -1,6 +1,6 @@
 import { Controller, Post, Body } from "@nestjs/common";
 import { servicioAutenticacion } from "./autenticacion.service";
-import { Registro } from "./objetos para las requests";
+import { Login, Registro } from "./objetos para las requests";
 
 
 @Controller('autenticacion')
@@ -15,8 +15,8 @@ export class controladorAutenticacion {
     };
 
     @Post('inicioSesion')
-    inicioSesion(){
-        return this.servicioAutenticacion.inicioSesion();
+    inicioSesion(@Body() dto : Login){
+        return this.servicioAutenticacion.inicioSesion(dto);
     };
     
 

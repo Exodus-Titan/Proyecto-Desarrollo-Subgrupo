@@ -9,7 +9,6 @@ export class Registro {
     @IsNotEmpty()
     nombre_usuario : string;
 
-    @IsString()
     @IsNotEmpty()
     @IsEmail()
     email : string;
