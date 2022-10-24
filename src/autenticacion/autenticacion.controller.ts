@@ -1,6 +1,7 @@
 import { Controller, Post, Body } from "@nestjs/common";
 import { servicioAutenticacion } from "./autenticacion.service";
-import { Login, Registro } from "./objetos para las requests";
+import { busqueda, Login, Registro } from "./objetos para las requests";
+import { eliminarUsuarioComoAdmin } from "./objetos para las requests/eliminarUsuarioComoAdmin.autenticacion";
 
 
 @Controller('autenticacion')
@@ -19,5 +20,19 @@ export class controladorAutenticacion {
         return this.servicioAutenticacion.inicioSesion(dto);
     };
     
+    @Post('buscarUsuario')
+    buscarUsuario(@Body() dto : busqueda){
+        return this.servicioAutenticacion.buscarUsuario(dto);
+    };
+
+    @Post('eliminarUsuarioPropio')
+    eliminarUsuarioPropio(@Body() dto : Login){
+        return this.servicioAutenticacion.eliminarUsuarioPropio(dto)
+    }
+
+    @Post('eliminarUsuarioComoAdmin')
+    eliminarUsuarioComoAdmin(@Body() dto : eliminarUsuarioComoAdmin){
+        return this.servicioAutenticacion.eliminarUsuarioComoAdmin(dto)
+    }
 
 }

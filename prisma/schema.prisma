@@ -19,4 +19,28 @@ model Usuario {
   cursos         Int[]
   estado         Boolean @default(false)
   tipo           String //Estudiante, Profesor o Administrador, pero como tienen los mismos atributos no hay porque diferenciarlos en la base de datos
+  Curso          Curso[]
+}
+
+model Curso {
+  id             Int       @id @default(autoincrement())
+  titulo         String
+  descripcion    String
+  categoria      String
+  palabras_clave String[]
+  profesor       Usuario   @relation(fields: [id_profesor], references: [id])
+  id_profesor    Int
+  estado         String
+  Leccion        Leccion[]
+}
+
+model Leccion {
+  id             Int      @id @default(autoincrement())
+  titulo         String
+  descripcion    String
+  categoria      String
+  palabras_clave String[]
+  curso          Curso    @relation(fields: [id_curso], references: [id])
+  id_curso       Int
+  estado         String
 }
