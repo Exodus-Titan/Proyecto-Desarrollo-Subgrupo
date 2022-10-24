@@ -17,6 +17,7 @@ export abstract class Usuario implements Suscriptor{
         this.clave = clave;
         this.estado = estado;
     }
+    
     actualizar(): void {
 
     }
