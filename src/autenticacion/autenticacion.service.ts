@@ -1,9 +1,7 @@
 import { ForbiddenException, Injectable } from "@nestjs/common";
 import { BaseDeDatosService } from "src/base_de_datos/base_de_datos.service";
-import { noEnviarClave, usuarioDuplicado, usuario_inexistente } from "./funciones";
-import { esAdmin } from "./funciones/esAdmin.autenticacion";
-import { busqueda, Login, Registro } from "./objetos para las requests";
-import { eliminarUsuarioComoAdmin } from "./objetos para las requests/eliminarUsuarioComoAdmin.autenticacion";
+import { noEnviarClave, usuarioDuplicado, usuario_inexistente, esAdmin, convertirABuscar} from "./funciones";
+import { busqueda, Login, Registro, eliminarUsuarioComoAdmin, modificarEmail } from "./objetos para las requests";
 
 @Injectable({})
 export class servicioAutenticacion{
@@ -54,9 +52,14 @@ export class servicioAutenticacion{
     async eliminarUsuarioComoAdmin(dto : eliminarUsuarioComoAdmin) {  //borrar
         const usuario = this.inicioSesion(dto)
         esAdmin(await usuario)
+        const comprobacion = this.buscarUsuario(convertirABuscar(dto.nombre_usuario_a_borrar))
+        usuario_inexistente(await comprobacion, 'No hay ninguna cuenta con el nombre de usuario proporcionado asignado')
         const usuarioAborrar = await this.base.usuario.delete({where : {nombre_usuario : dto.nombre_usuario_a_borrar}})
         return usuarioAborrar
     }
 
-    //async modificarEmail(dto : )
+    async modificarEmail(dto : modificarEmail){
+        let usuario = this.inicioSesion(dto)
+        usuario = this.base.usuario.update({where : {email : dto.email}, data : {email : dto.email_a_cambiar}})
+    }
 }

@@ -6,4 +6,8 @@ export class busqueda {
     @IsNotEmpty()
     nombre_usuario? : string
 
+    constructor(nombre : string){
+        this.nombre_usuario = nombre
+    }
+
 }

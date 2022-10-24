@@ -1,3 +1,5 @@
 export * from './registro.autenticacion'
 export * from './login.autenticacion'
 export * from './busqueda.autenticacion'
+export * from './eliminarUsuarioComoAdmin.autenticacion'
+export * from './modificarEmail.autenticacion'
