@@ -6,9 +6,10 @@ import { UsuarioModule } from './usuario/usuario.module';
 import { CursosModule } from './cursos/cursos.module';
 import { BaseDeDatosModule } from './base_de_datos/base_de_datos.module';
 import { ConfigModule } from '@nestjs/config'
+import { NotificacionesModule } from './notificaciones/notificaciones.module';
 
 @Module({
-  imports: [moduloAutenticacion, UsuarioModule, CursosModule, BaseDeDatosModule, ConfigModule.forRoot({isGlobal : true})],
+  imports: [moduloAutenticacion, UsuarioModule, CursosModule, BaseDeDatosModule, ConfigModule.forRoot({isGlobal : true}), NotificacionesModule],
   controllers: [AppController],
   providers: [AppService],
 })
