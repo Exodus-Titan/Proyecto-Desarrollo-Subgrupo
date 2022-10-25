@@ -8,4 +8,5 @@ export class Login {
     @IsNotEmpty()
     @IsString()
     clave  : string
+
 }
