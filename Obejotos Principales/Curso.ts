@@ -3,6 +3,7 @@ import { Curso_Eliminado } from "./Curso_Eliminado";
 import { Curso_Publicado } from "./Curso_Publicado";
 import { Curso_Suspendido } from "./Curso_Suspendido";
 import { Estado_Curso } from "./Estado_Curso";
+import { Estudiante } from "./Estudiante";
 import { ICursos_Y_Lecciones } from "./ICursos_Y_Lecciones";
 import { Leccion } from "./Leccion";
 import { Profesor } from "./Profesor";
@@ -30,10 +31,28 @@ export class Curso implements ICursos_Y_Lecciones{
         this.estado = new Curso_Creado(this);
     }
     
-    private cambier_estado(estado: Estado_Curso): void{
+    private cambiar_estado(estado: Estado_Curso): void{
         this.estado = estado;
     }
     
+    // Metodos a utilizar
+    public suscribir_usuario(estudiante: Usuario): void{
+        this.estado.inscribir_usuario(estudiante);
+    }
+
+    public retirar_usuario(estudiante: Usuario): void{
+        this.estado.retirar_usuario(estudiante);
+    }
+
+    public publicar_leccion(leccion: Leccion): void{
+        this.estado.agregar_leccion(leccion);
+    }
+
+    public borrar_leccion(leccion: Leccion): void{
+        this.estado.retirar_leccion(leccion);
+    }
+    // Metodos a utilizar
+
     // Metodos ejecutados en base al estado del curso
     public nuevo_estudiante(estudiante: Usuario): void{
         this.estudiantes_inscritos.push(estudiante);
@@ -63,15 +82,15 @@ export class Curso implements ICursos_Y_Lecciones{
     // Metodos ejecutados en base al estado del curso
     
     public publicar(): void{
-        this.cambier_estado(new Curso_Publicado(this));
+        this.cambiar_estado(new Curso_Publicado(this));
     }
 
     public suspender(): void{
-        this.cambier_estado(new Curso_Suspendido(this));
+        this.cambiar_estado(new Curso_Suspendido(this));
     }
 
     public eliminar(): void{
-        this.cambier_estado(new Curso_Eliminado(this));
+        this.cambiar_estado(new Curso_Eliminado(this));
     }
 
 }
