@@ -94,4 +94,5 @@ export class servicioAutenticacion{
         usuario = this.base.usuario.update({where : {email : (await usuario).email}, data : {estado : nuevoEstado}})
         return usuario
     }
+    
 }
