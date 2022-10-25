@@ -62,4 +62,36 @@ export class servicioAutenticacion{
         let usuario = this.inicioSesion(dto)
         usuario = this.base.usuario.update({where : {email : dto.email}, data : {email : dto.email_a_cambiar}})
     }
+<<<<<<< HEAD
+=======
+
+    async modificarClave(dto : ModificarClave){     //actualizar
+        let usuario = this.inicioSesion(dto)
+        usuario = this.base.usuario.update({where : {email : (await usuario).email}, data : {clave : dto.clave_a_cambiar}})
+        return usuario
+    }
+
+    async modificarNombreUsuario(dto : ModificarNombreUsuario){     //actualizar
+        let usuario = this.inicioSesion(dto)
+        usuario = this.base.usuario.update({where : {email : (await usuario).email}, data : {nombre_usuario : dto.nombre_usuario_a_cambiar}})
+        return usuario
+    }
+
+    async modificarNombre(dto : ModificarNombre){     //actualizar
+        let usuario = this.inicioSesion(dto)
+        usuario = this.base.usuario.update({where : {email : (await usuario).email}, data : {nombre : dto.nombre_a_cambiar}})
+        return usuario
+    }
+
+    async modificarEstado(dto : ModificarEstado){     //actualizar
+        let usuario = this.inicioSesion(dto)
+        let nuevoEstado : boolean
+        if(dto.estado_a_cambiar == 'true')
+            nuevoEstado = true;
+        else
+            nuevoEstado = false;
+        usuario = this.base.usuario.update({where : {email : (await usuario).email}, data : {estado : nuevoEstado}})
+        return usuario
+    }
+>>>>>>> parent of 77235dc (CRUD de usuarios listo)
 }
