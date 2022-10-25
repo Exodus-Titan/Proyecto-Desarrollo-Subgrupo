@@ -1,6 +1,6 @@
-import { busqueda, Login } from "../objetos para las requests";
+import { busqueda } from "../objetos para las requests";
 
 export function convertirABuscar(nombre_usuario : string) : busqueda{
-    const x : busqueda= new busqueda(nombre_usuario)
+    let x : busqueda= new busqueda(nombre_usuario)
     return x
 }
