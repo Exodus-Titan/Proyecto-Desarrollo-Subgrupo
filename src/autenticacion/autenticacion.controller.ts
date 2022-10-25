@@ -1,7 +1,6 @@
 import { Controller, Post, Body, Get, Delete } from "@nestjs/common";
 import { servicioAutenticacion } from "./autenticacion.service";
-import { busqueda, Login, Registro } from "./objetos para las requests";
-import { eliminarUsuarioComoAdmin } from "./objetos para las requests/eliminarUsuarioComoAdmin.autenticacion";
+import { busqueda, Login, ModificarClave, modificarEmail, ModificarNombreUsuario, Registro, eliminarUsuarioComoAdmin, ModificarNombre, ModificarEstado } from "./objetos para las requests";
 
 
 @Controller('autenticacion')
@@ -33,6 +32,31 @@ export class controladorAutenticacion {
     @Delete('eliminarUsuarioComoAdmin')
     eliminarUsuarioComoAdmin(@Body() dto : eliminarUsuarioComoAdmin){
         return this.servicioAutenticacion.eliminarUsuarioComoAdmin(dto)
+    }
+
+    @Post('modificarEmail')
+    modificarEmail(@Body() dto : modificarEmail){
+        return this.servicioAutenticacion.modificarEmail(dto)
+    }
+
+    @Post('modificarClave')
+    modificarClave(@Body() dto : ModificarClave){
+        return this.servicioAutenticacion.modificarClave(dto)
+    }
+
+    @Post('modificarNombreUsuario')
+    modificarNombreUsuario(@Body() dto : ModificarNombreUsuario){
+        return this.servicioAutenticacion.modificarNombreUsuario(dto)
+    }
+
+    @Post('modificarNombre')
+    modificarNombre(@Body() dto : ModificarNombre){
+        return this.servicioAutenticacion.modificarNombre(dto)
+    }
+
+    @Post('modificarEstado')
+    modificarEstado(@Body() dto : ModificarEstado){
+        return this.servicioAutenticacion.modificarEstado(dto)
     }
 
 }
