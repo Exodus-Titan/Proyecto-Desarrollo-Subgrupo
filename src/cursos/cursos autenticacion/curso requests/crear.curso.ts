@@ -23,7 +23,7 @@ export class CrearCurso {
     @IsNotEmpty()
     palabras_clave : string;
 
-    //ID del prof
+    //estado
     @IsNotEmpty()
     @IsString()
     nombre_usuario : string

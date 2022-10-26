@@ -13,7 +13,7 @@ import { busqueda } from "src/autenticacion/objetos para las requests";
 @Injectable({})
 export class CursoServicioAutenticacion{
 
-    constructor(private base: BaseDeDatosService, private envio: NotificacionesService, private login : servicioAutenticacion){}
+    constructor(private base: BaseDeDatosService, private envio: NotificacionesService, private sesion : servicioAutenticacion){}
 
     claveCorreo = this.base.correo.findUnique({where:{correo : 'desarrolloucab2022@gmail.com'}})
    
@@ -29,7 +29,7 @@ export class CursoServicioAutenticacion{
                     titulo : dto.titulo,
                     descripcion : dto.descripcion,
                     categoria : dto.categoria,
-                    id_profesor : (await this.login.buscarUsuario(getId)).id,
+                    id_profesor : (await this.sesion.buscarUsuario(getId)).id,
                     palabras_clave : dto.palabras_clave,
                     estado : 'creado'
                 }
