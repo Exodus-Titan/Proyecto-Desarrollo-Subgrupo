@@ -1,7 +1,7 @@
-import { IsNotEmpty, IsString, IsEnum, IsNumber, IsEmail } from "class-validator";
-import { Estado_curso_Leccion } from "Tipos de Datos/enumeradoEstados";
+import { IsNotEmpty, IsString } from "class-validator";
+import { Login } from "src/autenticacion/objetos para las requests";
 
-export class CrearCurso {
+export class CrearCurso extends Login{
 
     //titulo curso
     @IsString()
@@ -22,10 +22,5 @@ export class CrearCurso {
     @IsString()
     @IsNotEmpty()
     palabras_clave : string;
-
-    //estado
-    @IsNotEmpty()
-    @IsString()
-    nombre_usuario : string
 
 }

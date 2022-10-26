@@ -7,7 +7,6 @@ import { esAdmin} from "src/autenticacion/funciones";
 import { /*cursoDuplicado,*/ curso_inexistente } from "./funciones curso";
 import { CrearCurso, BusquedaTituloCurso, BusquedaCategoriaCurso, BusquedaPalabrasClaveCurso, ModificarTitulo, ModificarDescripcion,  ModificarCategoria, ModificarPalabrasClave, ModificarEstadoCurso, Login, EliminarCursoComoAdmin} from "./curso requests";
 import { servicioAutenticacion } from "src/autenticacion/autenticacion.service";
-import { busqueda } from "src/autenticacion/objetos para las requests";
 
 
 @Injectable({})
@@ -23,26 +22,25 @@ export class CursoServicioAutenticacion{
     async crearCurso(dto: CrearCurso) {     
             //iniciar sesion para poder crear curso (?)
         try{
-            const getId : busqueda = new busqueda(dto.nombre_usuario)
-            const curso = await this.base.curso.create({
-                data : {
-                    titulo : dto.titulo,
-                    descripcion : dto.descripcion,
-                    categoria : dto.categoria,
-                    id_profesor : (await this.sesion.buscarUsuario(getId)).id,
-                    palabras_clave : dto.palabras_clave,
-                    estado : 'creado'
-                }
-        })
+            const prof = this.sesion.inicioSesion(dto)
+            if ((await prof).tipo == 'profesor' && (await prof).estado == true){
+                const curso = await this.base.curso.create({
+                    data : {
+                        titulo : dto.titulo,
+                        descripcion : dto.descripcion,
+                        categoria : dto.categoria,
+                        id_profesor : (await prof).id,
+                        palabras_clave : dto.palabras_clave,
+                        estado : 'creado'
+                    }
+                });
+                return curso;
+            }else
+                throw new ForbiddenException('El usuario con el que intenta iniciar sesio no es un profesor o no esta activo actualmente')
+            
+        
                     
-        return curso;
-
-        // Verificar si el curso está duplicado
-        /* catch(error){
-            cursoDuplicado(error)
-            throw error;
-        } */
-
+        
         }
         catch (error){
             throw error;
@@ -52,6 +50,7 @@ export class CursoServicioAutenticacion{
     //Buscar el curso por su titulo
     async buscarCurso(dto : BusquedaTituloCurso){ 
             //iniciar sesion para poder buscar curso (?)
+        
         const curso = await this.base.curso.findMany({where : {titulo : dto.titulo}})
         curso_inexistente(curso, 'No existe ningún curso con el título proporcionado')
         
