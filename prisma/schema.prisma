@@ -28,6 +28,7 @@ model Curso {
   descripcion    String
   categoria      String
   palabras_clave String[]
+  estudiantes    Int[]
   profesor       Usuario   @relation(fields: [id_profesor], references: [id])
   id_profesor    Int
   estado         String

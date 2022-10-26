@@ -9,3 +9,5 @@ export * from './modificarcategoria.curso' //modificar categoria del curso
 export * from './modificarpalabrasclave.curso' //modificar palabras clave del curso
 export * from './modificarestado.curso' //modificar estado del curso
 export * from './eliminarcomoadmin.curso' //modificar estado del curso
+export * from './modificar'
+export * from './datosMensajeEstado'

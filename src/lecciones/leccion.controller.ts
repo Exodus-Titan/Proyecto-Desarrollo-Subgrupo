@@ -1,18 +1,13 @@
 import { Controller, Post, Body, Get, Delete } from "@nestjs/common";
 import { LeccionServicioAutenticacion } from "./leccion.service";
-import { BusquedaLeccion } from "./request leccion/Busqueda.Leccion";
-import { ModificarCategoriaLeccion } from "./request leccion/ModificarCategoria.Leccion";
-import { ModificarDescripcionLeccion } from "./request leccion/ModificarDescripcion.Leccion";
-import { ModificarPalabrasClaveLeccion } from "./request leccion/ModificarPalabrasClave.Leccion";
-import { ModificarTituloLeccion } from "./request leccion/ModificarTitulo.Leccion";
-import { RegistroLeccion } from "./request leccion/registro.Leccion";
+import { BusquedaLeccion, ModificarCategoriaLeccion, ModificarDescripcionLeccion, ModificarPalabrasClaveLeccion, ModificarTituloLeccion, RegistroLeccion, EliminarLeccion } from "./request leccion";
 
 
 @Controller('Autenticacion Leccion')
 
 export class LeccionControladorAutenticacion {
     constructor(private LeccionServicioAutenticacion : LeccionServicioAutenticacion){}
-    /*
+/* 
     //Create
     @Post('RegistroLeccion')
     registroLeccion(@Body() dto : RegistroLeccion) {
@@ -50,16 +45,17 @@ export class LeccionControladorAutenticacion {
     }
     //Update
 
-    //Delete
-    /*@Delete('EliminarLeccionPropio')
-    eliminarLeccionPropio(@Body() dto : Login){
-        return this.LeccionServicioAutenticacion.eliminarLeccionPropio(dto)
+    //El profesor elimina la leccion
+    @Delete('EliminarLeccionProf')
+    eliminarLeccionProfesor(@Body() dto : EliminarLeccion){
+        return this.LeccionServicioAutenticacion.eliminarLeccionProfesor(dto)
     }
 
+    //Un administrador elimina la leccion
     @Delete('EliminarLeccionComoAdmin')
-    eliminarLeccionComoAdmin(@Body() dto : eliminarLeccionComoAdmin){
-        return this.LeccionServicioAutenticacion.eliminarLeccionComoAdmin(dto)
+    eliminarLeccionAdmin(@Body() dto : EliminarLeccion){
+        return this.LeccionServicioAutenticacion.eliminarLeccionAdmin(dto)
     }
-    //Delete
-    */
+ */
+
 }

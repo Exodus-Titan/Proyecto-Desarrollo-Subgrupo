@@ -1,7 +1,7 @@
 import { IsNotEmpty, IsString } from "class-validator";
-import { Login } from "./iniciosesion.curso";
+import { modificar } from "./modificar";
 
-export class ModificarCategoria extends Login{
+export class ModificarCategoria extends modificar{
     
     @IsNotEmpty()
     @IsString()

@@ -1,7 +1,8 @@
 import { ForbiddenException, Injectable } from "@nestjs/common";
 import { BaseDeDatosService } from "src/base_de_datos/base_de_datos.service";
 import { leccion_inexistente } from "./funcones leccion/leccionInexistente";
-import { BusquedaLeccion, ModificarCategoriaLeccion, ModificarDescripcionLeccion, ModificarPalabrasClaveLeccion, ModificarTituloLeccion, RegistroLeccion } from "./request leccion";
+import { comprobarAdminActivo } from "./funcones leccion/comprobaradmin";
+import { BusquedaLeccion, ModificarCategoriaLeccion, ModificarDescripcionLeccion, ModificarPalabrasClaveLeccion, ModificarTituloLeccion, RegistroLeccion, EliminarLeccion } from "./request leccion";
 import { servicioAutenticacion } from "src/autenticacion/autenticacion.service";
 import { comprobarAdminOProfActivo, comprobarProfActivo } from "src/cursos/cursos autenticacion/funciones curso";
 
@@ -11,8 +12,7 @@ import { comprobarAdminOProfActivo, comprobarProfActivo } from "src/cursos/curso
 export class LeccionServicioAutenticacion{
 
     constructor(private base: BaseDeDatosService, private sesion : servicioAutenticacion){}
-    /*
-   
+/*    
     //Crear Leccion
     async registroLeccion(dto: RegistroLeccion) {     
 
@@ -50,7 +50,7 @@ export class LeccionServicioAutenticacion{
     // Modificar titulo de leccion
     async modificarTitulo(dto : ModificarTituloLeccion){     //actualizar
         const prof = this.sesion.inicioSesion(dto)
-        let leccion = this.base.leccion.update({where : {id : Number(dto.id)}})
+        let leccion = this.base.leccion.findUnique({where : {id : Number(dto.id)}})
         if (comprobarAdminOProfActivo(await prof, Number(dto.id))){
             leccion = this.base.leccion.update({where : {id : Number(dto.id)}, data : {titulo : dto.titulo_a_cambiar}})
             return leccion  
@@ -62,7 +62,7 @@ export class LeccionServicioAutenticacion{
     // Modificar descripcion de leccion
     async modificarDescripcion(dto : ModificarDescripcionLeccion){     //actualizar
         const prof = this.sesion.inicioSesion(dto)
-        let leccion = this.base.leccion.update({where : {id : Number(dto.id)}})
+        let leccion = this.base.leccion.findUnique({where : {id : Number(dto.id)}})
         if (comprobarAdminOProfActivo(await prof, Number(dto.id))){
             leccion = this.base.leccion.update({where : {id : Number(dto.id)}, data : {descripcion : dto.descripcion_a_cambiar}})
             return leccion  
@@ -74,7 +74,7 @@ export class LeccionServicioAutenticacion{
     // Modificar categoria de leccion
     async modificarCategoria(dto : ModificarCategoriaLeccion){     //actualizar
         const prof = this.sesion.inicioSesion(dto)
-        let leccion = this.base.leccion.update({where : {id : Number(dto.id)}})
+        let leccion = this.base.leccion.findUnique({where : {id : Number(dto.id)}})
         if (comprobarAdminOProfActivo(await prof, Number(dto.id))){
             leccion = this.base.leccion.update({where : {id : Number(dto.id)}, data : {categoria : dto.categoria_a_cambiar}})
             return leccion  
@@ -86,7 +86,7 @@ export class LeccionServicioAutenticacion{
     // Modificar palabras clave de leccion
     async modificarPalabrasClave(dto : ModificarPalabrasClaveLeccion){     //actualizar
         const prof = this.sesion.inicioSesion(dto)
-        let leccion = this.base.leccion.update({where : {id : Number(dto.id)}})
+        let leccion = this.base.leccion.findUnique({where : {id : Number(dto.id)}})
         if (comprobarAdminOProfActivo(await prof, Number(dto.id))){
             leccion = this.base.leccion.update({where : {id : Number(dto.id)}, data : {palabras_clave : dto.palabras_clave_a_cambiar}})
             return leccion  
@@ -95,9 +95,30 @@ export class LeccionServicioAutenticacion{
         }
     }
 
-    async eliminarLeccion(dto : ModificarLeccion) {  //borrar
-        const leccion_eliminar = await this.base.leccion.delete({where : {id : (await leccion).id}})
-        return leccion_eliminar
+    //El profesor elimina la leccion
+    async eliminarLeccionProfesor(dto : EliminarLeccion){ 
+        const prof = this.sesion.inicioSesion(dto)
+        let leccion_eliminar = this.base.leccion.findUnique({where : {id : Number(dto.id)}})
+        if (comprobarProfActivo(await prof, Number(dto.id))){
+            leccion_eliminar = this.base.leccion.delete({where : {id : Number(dto.id)}})
+            return leccion_eliminar;
+        }
+        else
+            throw new ForbiddenException('El usuario con el que está inicianco sesión no es un profesor, no esta activo o no es el dueño del curso')
+    
     }
-    */
+
+    //Un administrador elimina la leccion
+    async eliminarLeccionAdmin(dto : EliminarLeccion){ 
+        const prof = this.sesion.inicioSesion(dto)
+        let leccion_eliminar = this.base.leccion.findUnique({where : {id : Number(dto.id)}})
+        if (comprobarAdminActivo(await prof, Number(dto.id))){
+            leccion_eliminar = this.base.leccion.delete({where : {id : Number(dto.id)}})
+            return leccion_eliminar;
+        }
+        else
+            throw new ForbiddenException('El usuario con el que está inicianco sesión no es un administrador, no esta activo o no es el dueño del curso')
+    
+    } */
+    
 }
