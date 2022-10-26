@@ -1,5 +1,6 @@
 import { Curso } from "./Curso";
 import { Leccion } from "./Leccion";
+import { Mensaje } from "./Mensaje";
 import { Usuario } from "./Usuario";
 
 export abstract class Estado_Curso {
@@ -14,4 +15,5 @@ export abstract class Estado_Curso {
     public abstract retirar_leccion(leccion: Leccion): void;
     public abstract inscribir_usuario(usuario: Usuario): void;
     public abstract retirar_usuario(usuario: Usuario): void;
+    public abstract publicar_mensaje(mensaje: Mensaje): void;
 }

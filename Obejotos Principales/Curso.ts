@@ -3,9 +3,9 @@ import { Curso_Eliminado } from "./Curso_Eliminado";
 import { Curso_Publicado } from "./Curso_Publicado";
 import { Curso_Suspendido } from "./Curso_Suspendido";
 import { Estado_Curso } from "./Estado_Curso";
-import { Estudiante } from "./Estudiante";
 import { ICursos_Y_Lecciones } from "./ICursos_Y_Lecciones";
 import { Leccion } from "./Leccion";
+import { Mensaje } from "./Mensaje";
 import { Profesor } from "./Profesor";
 import { Usuario } from "./usuario";
 
@@ -50,6 +50,10 @@ export class Curso implements ICursos_Y_Lecciones{
 
     public borrar_leccion(leccion: Leccion): void{
         this.estado.retirar_leccion(leccion);
+    }
+
+    public leccion_publicar_mensaje(mensaje: Mensaje): void{
+        this.estado.publicar_mensaje(mensaje);
     }
     // Metodos a utilizar
 

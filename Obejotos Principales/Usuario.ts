@@ -10,12 +10,11 @@ export abstract class Usuario implements Suscriptor{
     cursos_inscritos : Curso[] = [];
     estado : Estado_Usuario;
 
-    public constructor (id : number, nombre_usuario : string, email : string, clave : string, estado: Estado_Usuario){
+    public constructor (id : number, nombre_usuario : string, email : string, clave : string){
         this.id = id;
         this.nombre_usuario = nombre_usuario;
         this.email = email;
         this.clave = clave;
-        this.estado = estado;
     }
     
     actualizar(): void {

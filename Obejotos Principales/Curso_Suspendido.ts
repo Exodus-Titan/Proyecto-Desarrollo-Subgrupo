@@ -1,5 +1,6 @@
 import { Estado_Curso } from "./Estado_Curso";
 import { Leccion } from "./Leccion";
+import { Mensaje } from "./Mensaje";
 import { Usuario } from "./Usuario";
 
 export class Curso_Suspendido extends Estado_Curso {
@@ -17,5 +18,8 @@ export class Curso_Suspendido extends Estado_Curso {
     }
     retirar_usuario(usuario: Usuario): void {
         console.log('El curso se encuentra suspendido');
+    }    
+    public publicar_mensaje(mensaje: Mensaje): void {
+        console.log('El curso se encunetra suspendido');
     }
 }

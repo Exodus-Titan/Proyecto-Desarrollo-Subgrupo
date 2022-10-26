@@ -1,9 +1,16 @@
 import { Curso } from "./Curso";
-import { Leccion } from "./Leccion";
+import { Estudiante } from "./Estudiante";
+import { Mensaje } from "./Mensaje";
 
-export interface Estado_Usuario {
-    suscribir_curso(curso: Curso): void;
-    retirar_curso(curso: Curso): void;
-    publicar_mensaje(leccion: Leccion): void;
-    eliminar_mensaje(leccion: Leccion): void;
+export abstract class Estado_Usuario {
+    protected estudiante: Estudiante;
+
+    public constructor(estudiante: Estudiante){
+      this.estudiante = estudiante;
+    }
+
+    public abstract suscribir_curso(curso: Curso): void;
+    public abstract retirar_curso(curso: Curso): void;
+    public abstract publicar_mensaje(mensaje: Mensaje): void;
+    public abstract eliminar_mensaje(mensaje: Mensaje): void;
   }

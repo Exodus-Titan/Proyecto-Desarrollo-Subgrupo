@@ -1,5 +1,6 @@
 import { Estado_Curso } from "./Estado_Curso";
 import { Leccion } from "./Leccion";
+import { Mensaje } from "./Mensaje";
 import { Usuario } from "./Usuario";
 
 export class Curso_Publicado extends Estado_Curso {
@@ -18,5 +19,8 @@ export class Curso_Publicado extends Estado_Curso {
     retirar_usuario(usuario: Usuario): void {
         this.curso.eliminar_estudainte(usuario);
     }
-
+    public publicar_mensaje(mensaje: Mensaje): void {
+        let leccion: Leccion = mensaje.obtener_leccion();
+        leccion.Publicar_Mensaje(mensaje);
+    }
 }
