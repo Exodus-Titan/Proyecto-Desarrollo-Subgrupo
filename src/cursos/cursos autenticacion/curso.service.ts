@@ -23,7 +23,6 @@ export class CursoServicioAutenticacion{
         try{
             const curso = await this.base.curso.create({
                 data : {
-                    id: dto.titulo,
                     titulo : dto.titulo,
                     descripcion : dto.descripcion,
                     categoria : dto.categoria,
@@ -34,12 +33,6 @@ export class CursoServicioAutenticacion{
         })
                     
         return curso;
-
-        // Verificar si el curso está duplicado
-        /* catch(error){
-            cursoDuplicado(error)
-            throw error;
-        } */
 
         }
     }

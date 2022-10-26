@@ -23,6 +23,11 @@ export class CrearCurso {
     @IsNotEmpty()
     palabras_clave : string;
 
+    //id_profesor
+    @IsEnum()
+    @IsNotEmpty()
+    id_profesor : number;
+
     //estado
     @IsNotEmpty()
     @IsEnum(Estado_curso_Leccion)
