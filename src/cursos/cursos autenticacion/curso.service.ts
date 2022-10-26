@@ -4,7 +4,7 @@ import { envio } from "src/notificaciones/funciones";
 import { NotificacionesService } from "src/notificaciones/notificaciones.service";
 import { envioDto } from "src/notificaciones/Objetos para notificaciones";
 import { esAdmin} from "src/autenticacion/funciones";
-import { /*cursoDuplicado,*/ curso_inexistente } from "./funciones curso";
+import { comprobarAdminOProfActivo, comprobarProfActivo, cursos_inexistentes, curso_inexistente } from "./funciones curso";
 import { CrearCurso, BusquedaTituloCurso, BusquedaCategoriaCurso, BusquedaPalabrasClaveCurso, ModificarTitulo, ModificarDescripcion,  ModificarCategoria, ModificarPalabrasClave, ModificarEstadoCurso, Login, EliminarCursoComoAdmin} from "./curso requests";
 import { servicioAutenticacion } from "src/autenticacion/autenticacion.service";
 
@@ -20,10 +20,9 @@ export class CursoServicioAutenticacion{
 
     //Crear Curso
     async crearCurso(dto: CrearCurso) {     
-            //iniciar sesion para poder crear curso (?)
         try{
             const prof = this.sesion.inicioSesion(dto)
-            if ((await prof).tipo == 'profesor' && (await prof).estado == true){
+            if (comprobarProfActivo( await (prof))){
                 const curso = await this.base.curso.create({
                     data : {
                         titulo : dto.titulo,
@@ -36,11 +35,7 @@ export class CursoServicioAutenticacion{
                 });
                 return curso;
             }else
-                throw new ForbiddenException('El usuario con el que intenta iniciar sesio no es un profesor o no esta activo actualmente')
-            
-        
-                    
-        
+                throw new ForbiddenException('El usuario con el que intenta iniciar sesio no es un profesor/administrador o no esta activo actualmente')
         }
         catch (error){
             throw error;
@@ -49,39 +44,40 @@ export class CursoServicioAutenticacion{
 
     //Buscar el curso por su titulo
     async buscarCurso(dto : BusquedaTituloCurso){ 
-            //iniciar sesion para poder buscar curso (?)
-        
-        const curso = await this.base.curso.findMany({where : {titulo : dto.titulo}})
-        curso_inexistente(curso, 'No existe ningún curso con el título proporcionado')
-        
-        return curso;
+        const cursos = await this.base.curso.findMany({where : {titulo : dto.titulo}})
+        cursos_inexistentes(cursos, 'No existe ningún curso con el título proporcionado')
+        return cursos;
     }
 
     //Buscar el curso por su categoria
     async BuscarCursoCategoria(dto : BusquedaCategoriaCurso){ 
-        //iniciar sesion para poder buscar curso (?)
-    const curso = await this.base.curso.findMany({where : {categoria : dto.categoria}})
-    curso_inexistente(curso, 'No existe ningún curso que sea de la categoria proporcionada')
-    
-    return curso;
+        const cursos = await this.base.curso.findMany({where : {categoria : dto.categoria}})
+        cursos_inexistentes(cursos, 'No existe ningún curso que sea de la categoria proporcionada')
+        return cursos;
     }
 
     //Buscar el curso por palabras clave
     async BuscarCursoPalabrasClave(dto : BusquedaPalabrasClaveCurso){ 
-        //iniciar sesion para poder buscar curso (?)
-    const curso = await this.base.curso.findMany({where : {palabras_clave : dto.palabras_clave}})
-    curso_inexistente(curso, 'No existe ningún curso que contenga la(s) palabra(s) clave proporcionada(s)')
-    
-    return curso;
+        const cursos = await this.base.curso.findMany({where : {palabras_clave : dto.palabras_clave}})
+        cursos_inexistentes(cursos, 'No existe ningún curso que contenga la(s) palabra(s) clave proporcionada(s)')
+        
+        return cursos;
     }
-     /*
+     
     //Modificar Titulo del curso
     async modificarTitulo(dto : ModificarTitulo){ 
-            //iniciar sesion para poder modificar (?)
-        const curso = this.base.curso.update({where : {id : (await curso).id}, data : {titulo : dto.titulo_nuevo}})
-
-        return curso;
+        const prof = this.sesion.inicioSesion(dto)
+        let curso = this.base.curso.findUnique({where : {id : Number(dto.id)}})
+        if (comprobarAdminOProfActivo(await prof, Number(dto.id))){
+            curso = this.base.curso.update({where : {id : Number(dto.id)}, data : {titulo : dto.titulo}})
+            return curso;
+        }
+        else
+            throw new ForbiddenException('El usuario con le que esta inicianco sesion no es un profesor/administrador, no esta activo o no es el dueño del curso')
+    
     }
+    
+    /*
 
     //Modificar descripcion del curso
     async ModificarDescripcion(dto : ModificarDescripcion){ 

@@ -1,1 +1,5 @@
-export * from './cursoInexistente.autenticacion'
+export * from './cursosInexistentes.autenticacion'
+export * from './comprobarProfActivo'
+export * from './comprobarAdminOProfActivo'
+export * from './propietarioDeCurso'
+export * from './cursoInexistente'
