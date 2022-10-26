@@ -1,5 +1,6 @@
 import { Controller, Post, Body, Get, Delete } from "@nestjs/common";
 import { LeccionServicioAutenticacion } from "./leccion.service";
+import { BusquedaLeccion } from "./request leccion/Busqueda.Leccion";
 import { RegistroLeccion } from "./request leccion/registro.leccion";
 
 
@@ -15,12 +16,12 @@ export class LeccionControladorAutenticacion {
         return this.LeccionServicioAutenticacion.registroLeccion(dto);
     };
     
-    /* @Get('BuscarLeccion')
+    @Get('BuscarLeccion')
     buscarLeccion(@Body() dto : BusquedaLeccion){
         return this.LeccionServicioAutenticacion.buscarLeccion(dto);
     };
 
-    @Delete('EliminarLeccionPropio')
+    /*@Delete('EliminarLeccionPropio')
     eliminarLeccionPropio(@Body() dto : Login){
         return this.LeccionServicioAutenticacion.eliminarLeccionPropio(dto)
     }

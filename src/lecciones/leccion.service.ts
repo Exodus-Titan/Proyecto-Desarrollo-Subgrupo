@@ -1,5 +1,7 @@
 import { ForbiddenException, Injectable } from "@nestjs/common";
 import { BaseDeDatosService } from "src/base_de_datos/base_de_datos.service";
+import { leccion_inexistente } from "./funcones leccion/leccionInexistente";
+import { BusquedaLeccion } from "./request leccion/Busqueda.Leccion";
 import { RegistroLeccion } from "./request leccion/registro.leccion";
 
 
@@ -31,5 +33,10 @@ export class LeccionServicioAutenticacion{
             throw error;
         } 
 
+    }
+
+    async buscarLeccion(dto : BusquedaLeccion){  // Leer
+        const leccion = await this.base.leccion.findUnique({where : {titulo : dto.titulo}})
+        leccion_inexistente(leccion, 'No hay ninguna leccion con el titulo proporcionado asignado')
     }
 }
