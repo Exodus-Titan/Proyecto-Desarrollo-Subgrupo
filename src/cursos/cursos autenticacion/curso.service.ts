@@ -1,7 +1,7 @@
 import { ForbiddenException, Injectable } from "@nestjs/common";
 import { BaseDeDatosService } from "src/base_de_datos/base_de_datos.service";
 import { cursoDuplicado, curso_inexistente } "from funciones curso";
-import { RegistroCurso, BusquedaTituloCurso, ModificarTitulo, ModificarDescripcion,  ModificarCategoria, ModificarPalabrasClave, ModificarEstadoCurso, Login, eliminarCursoComoAdmin} from "./curso requests";
+import { CrearCurso, BusquedaTituloCurso, BusquedaCategoriaCurso, BusquedaPalabrasClaveCurso, ModificarTitulo, ModificarDescripcion,  ModificarCategoria, ModificarPalabrasClave, ModificarEstadoCurso, Login, eliminarCursoComoAdmin} from "./curso requests";
 
 
 @Injectable({})
@@ -12,7 +12,7 @@ export class CursoServicioAutenticacion{
     //Inicio de sesion del usuario (?)
 
     //Crear Curso
-    async registroCurso(dto: RegistroCurso) {     
+    async crearCurso(dto: CrearCurso) {     
             //iniciar sesion para poder crear curso (?)
         try{
             const curso = await this.base.curso.create({
@@ -47,12 +47,46 @@ export class CursoServicioAutenticacion{
         return curso;
     }
 
+    //Buscar el curso por su categoria
+    async BuscarCursoCategoria(dto : BusquedaCategoriaCurso){ 
+        //iniciar sesion para poder buscar curso (?)
+    const curso = await this.base.curso.findUnique({where : {categoria : dto.categoria}})
+    curso_inexistente(curso, 'No existe ningún curso que sea de la categoria proporcionada')
+    
+    return curso;
+    }
+
+    //Buscar el curso por palabras clave
+    async BuscarCursoPalabrasClave(dto : BusquedaPalabrasClaveCurso){ 
+        //iniciar sesion para poder buscar curso (?)
+    const curso = await this.base.curso.findUnique({where : {palabras_clave : dto.palabras_clave}})
+    curso_inexistente(curso, 'No existe ningún curso que contenga la(s) palabra(s) clave proporcionada(s)')
+    
+    return curso;
+    }
+
     //Modificar Titulo del curso
     async modificarTitulo(dto : ModificarTitulo){ 
             //iniciar sesion para poder modificar (?)
-        const curso = this.base.curso.update({where : {id : (await curso).id}, data : {titulo : dto.nombre_titulo_nuevo}})
+        const curso = this.base.curso.update({where : {id : (await curso).id}, data : {titulo : dto.titulo_nuevo}})
 
         return curso;
     }
+
+    //Modificar descripcion del curso
+    async ModificarDescripcion(dto : ModificarDescripcion){ 
+        //iniciar sesion para poder modificar (?)
+    const curso = this.base.curso.update({where : {id : (await curso).id}, data : {descripcion : dto.nueva_descripcion}})
+
+    return curso;
+    }   
+
+    //Modificar categoria del curso
+    async ModificarCategoria(dto : ModificarCategoria){ 
+        //iniciar sesion para poder modificar (?)
+    const curso = this.base.curso.update({where : {id : (await curso).id}, data : {categoria : dto.nueva_categoria}})
+
+    return curso;
+    }       
 
 }

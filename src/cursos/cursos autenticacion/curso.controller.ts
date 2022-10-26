@@ -1,6 +1,6 @@
 import { Controller, Post, Body, Get, Delete } from "@nestjs/common";
 import { CursoServicioAutenticacion } from "./curso.service";
-import { RegistroCurso, BusquedaTituloCurso, ModificarTitulo, ModificarDescripcion,  ModificarCategoria, ModificarPalabrasClave, ModificarEstadoCurso, Login, eliminarCursoComoAdmin} from "./curso requests";
+import { CrearCurso, BusquedaTituloCurso, BusquedaCategoriaCurso, BusquedaPalabrasClaveCurso, ModificarTitulo, ModificarDescripcion,  ModificarCategoria, ModificarPalabrasClave, ModificarEstadoCurso, Login, eliminarCursoComoAdmin} from "./curso requests";
 
 
 @Controller('Autenticacion Curso')
@@ -12,9 +12,9 @@ export class CursoControladorAutenticacion {
 
     //Crear Curso
     @Post('RegistroCurso')
-    registroCurso(@Body() dto : RegistroCurso) {
+    crearCurso(@Body() dto : CrearCurso) {
         console.groupCollapsed({dto,})
-        return this.CursoServicioAutenticacion.registroCurso(dto);
+        return this.CursoServicioAutenticacion.crearCurso(dto);
     };
     
     //Buscar curso por su titulo
@@ -23,38 +23,53 @@ export class CursoControladorAutenticacion {
         return this.CursoServicioAutenticacion.buscarCurso(dto);
     };
 
+    //Buscar curso por su categorita
+    @Get('BuscarCursoCategoria')
+    BuscarCursoCategoria(@Body() dto : BusquedaCategoriaCurso){
+        return this.CursoServicioAutenticacion.BuscarCursoCategoria(dto);
+    };
+
+    //Buscar curso por palabras clave
+    @Get('BuscarCursoPalabrasClave')
+    BuscarCursoPalabrasClave(@Body() dto : BusquedaPalabrasClaveCurso){
+        return this.CursoServicioAutenticacion.BuscarCursoPalabrasClave(dto);
+    };
+
+    //Modificar Titulo del curso
     @Post('ModificarTitulo')
     modificarTitulo(@Body() dto : ModificarTitulo){
         return this.CursoServicioAutenticacion.modificarTitulo(dto)
     }
 
-    /* @Post('ModificarDescripcion')
-    modificarDescripcion(@Body() dto : ModificarDescripcion){
-        return this.CursoServicioAutenticacion.modificarDescripcion(dto)
+    //Modificar Descripcion del curso
+    @Post('ModificarDescripcion')
+    ModificarDescripcion(@Body() dto : ModificarDescripcion){
+        return this.CursoServicioAutenticacion.ModificarDescripcion(dto)
     }
 
+    //Modificar Categoria del curso
     @Post('ModificarCategoria')
-    modificarCategoria(@Body() dto : ModificarCategoria){
-        return this.CursoServicioAutenticacion.modificarCategoria(dto)
+    ModificarCategoria(@Body() dto : ModificarCategoria){
+        return this.CursoServicioAutenticacion.ModificarCategoria(dto)
     }
 
-    @Post('ModificarPalabrasClave')
+    /* @Post('ModificarPalabrasClave')
     modificarPalabrasClave(@Body() dto : ModificarPalabrasClave){
         return this.CursoServicioAutenticacion.modificarPalabrasClave(dto)
     }
 
-    @Post('modificarEstadoCurso')
-    modificarEstadoCurso(@Body() dto : ModificarEstadoCurso){
-        return this.CursoServicioAutenticacion.modificarEstadoCurso(dto)
+    @Post('ModificarEstadoCurso')
+    ModificarEstadoCurso(@Body() dto : ModificarEstadoCurso){
+        return this.CursoServicioAutenticacion.ModificarEstadoCurso(dto)
 
     @Delete('EliminarCursoPropio')
-    eliminarCursoPropio(@Body() dto : Login){
-        return this.CursoServicioAutenticacion.eliminarCursoPropio(dto)
+    EliminarCursoPropio(@Body() dto : Login){
+        return this.CursoServicioAutenticacion.EliminarCursoPropio(dto)
     }
 
     @Delete('EliminarCursoComoAdmin')
-    eliminarCursoComoAdmin(@Body() dto : eliminarCursoComoAdmin){
-        return this.CursoServicioAutenticacion.eliminarCursoComoAdmin(dto)
+    EliminarCursoComoAdmin(@Body() dto : EliminarCursoComoAdmin){
+        return this.CursoServicioAutenticacion.EliminarCursoComoAdmin(dto)
     }
 
     } */

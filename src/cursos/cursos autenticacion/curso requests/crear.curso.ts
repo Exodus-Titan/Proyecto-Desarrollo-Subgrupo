@@ -1,9 +1,7 @@
 import { IsEmail, IsNotEmpty, IsString, IsEnum } from "class-validator";
 import { Estado_curso_Leccion } from "Tipos de Datos/enumeradoEstados";
 
-export class RegistroCurso {
-
-    //Los @ en esta clase son decoradores de validacion 
+export class CrearCurso {
 
     //titulo curso
     @IsString()
