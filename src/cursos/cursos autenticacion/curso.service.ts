@@ -4,14 +4,16 @@ import { envio } from "src/notificaciones/funciones";
 import { NotificacionesService } from "src/notificaciones/notificaciones.service";
 import { envioDto } from "src/notificaciones/Objetos para notificaciones";
 import { esAdmin} from "src/autenticacion/funciones";
-import { cursoDuplicado, curso_inexistente } from "./funciones curso";
+import { /*cursoDuplicado,*/ curso_inexistente } from "./funciones curso";
 import { CrearCurso, BusquedaTituloCurso, BusquedaCategoriaCurso, BusquedaPalabrasClaveCurso, ModificarTitulo, ModificarDescripcion,  ModificarCategoria, ModificarPalabrasClave, ModificarEstadoCurso, Login, EliminarCursoComoAdmin} from "./curso requests";
+import { servicioAutenticacion } from "src/autenticacion/autenticacion.service";
+import { busqueda } from "src/autenticacion/objetos para las requests";
 
 
 @Injectable({})
 export class CursoServicioAutenticacion{
 
-    constructor(private base: BaseDeDatosService, private envio: NotificacionesService){}
+    constructor(private base: BaseDeDatosService, private envio: NotificacionesService, private login : servicioAutenticacion){}
 
     claveCorreo = this.base.correo.findUnique({where:{correo : 'desarrolloucab2022@gmail.com'}})
    
@@ -21,15 +23,15 @@ export class CursoServicioAutenticacion{
     async crearCurso(dto: CrearCurso) {     
             //iniciar sesion para poder crear curso (?)
         try{
+            const getId : busqueda = new busqueda(dto.nombre_usuario)
             const curso = await this.base.curso.create({
                 data : {
-                    id: dto.titulo,
                     titulo : dto.titulo,
                     descripcion : dto.descripcion,
                     categoria : dto.categoria,
-                    id_profesor : dto.id_profesor,
+                    id_profesor : (await this.login.buscarUsuario(getId)).id,
                     palabras_clave : dto.palabras_clave,
-                    estado : dto.estado.toString()
+                    estado : 'creado'
                 }
         })
                     
@@ -42,12 +44,15 @@ export class CursoServicioAutenticacion{
         } */
 
         }
+        catch (error){
+            throw error;
+        }
     }
 
     //Buscar el curso por su titulo
     async buscarCurso(dto : BusquedaTituloCurso){ 
             //iniciar sesion para poder buscar curso (?)
-        const curso = await this.base.curso.findUnique({where : {titulo : dto.titulo}})
+        const curso = await this.base.curso.findMany({where : {titulo : dto.titulo}})
         curso_inexistente(curso, 'No existe ningún curso con el título proporcionado')
         
         return curso;
@@ -56,7 +61,7 @@ export class CursoServicioAutenticacion{
     //Buscar el curso por su categoria
     async BuscarCursoCategoria(dto : BusquedaCategoriaCurso){ 
         //iniciar sesion para poder buscar curso (?)
-    const curso = await this.base.curso.findUnique({where : {categoria : dto.categoria}})
+    const curso = await this.base.curso.findMany({where : {categoria : dto.categoria}})
     curso_inexistente(curso, 'No existe ningún curso que sea de la categoria proporcionada')
     
     return curso;
@@ -65,12 +70,12 @@ export class CursoServicioAutenticacion{
     //Buscar el curso por palabras clave
     async BuscarCursoPalabrasClave(dto : BusquedaPalabrasClaveCurso){ 
         //iniciar sesion para poder buscar curso (?)
-    const curso = await this.base.curso.findUnique({where : {palabras_clave : dto.palabras_clave}})
+    const curso = await this.base.curso.findMany({where : {palabras_clave : dto.palabras_clave}})
     curso_inexistente(curso, 'No existe ningún curso que contenga la(s) palabra(s) clave proporcionada(s)')
     
     return curso;
     }
-
+     /*
     //Modificar Titulo del curso
     async modificarTitulo(dto : ModificarTitulo){ 
             //iniciar sesion para poder modificar (?)
@@ -114,7 +119,7 @@ export class CursoServicioAutenticacion{
         }else if (dto.nuevo_estado == '4'){
             datosEnvio.asunto = 'Se eliminó el curso';                                  //Notificacion curso eliminado
             datosEnvio.mensaje = 'Desafortunadamente se ha eliminado el curso al que estaba subscrito'
-        } */
+        } 
 
         curso = this.base.curso.update({where : {id : (await curso).id}, data : {estado : dto.nuevo_estado}})
         //this.envio.envioMensaje(datosEnvio, (await this.claveCorreo).clave)
@@ -140,6 +145,6 @@ export class CursoServicioAutenticacion{
         const datosEnvio = new envioDto('"Corsi Plataforma"', dto.email, 'Eliminación del curso', 'Su curso ha sido eliminado.    Esta accion fue realizada por el administrador ' + (await usuario).nombre_usuario)
         this.envio.envioMensaje(datosEnvio, (await this.claveCorreo).clave)
         return curso;
-    }
+    }*/
     
 }

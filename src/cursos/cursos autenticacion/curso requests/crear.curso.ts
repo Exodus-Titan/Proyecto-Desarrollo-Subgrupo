@@ -1,4 +1,4 @@
-import { IsEmail, IsNotEmpty, IsString, IsEnum } from "class-validator";
+import { IsNotEmpty, IsString, IsEnum, IsNumber, IsEmail } from "class-validator";
 import { Estado_curso_Leccion } from "Tipos de Datos/enumeradoEstados";
 
 export class CrearCurso {
@@ -23,9 +23,9 @@ export class CrearCurso {
     @IsNotEmpty()
     palabras_clave : string;
 
-    //estado
+    //ID del prof
     @IsNotEmpty()
-    @IsEnum(Estado_curso_Leccion)
-    estado : Estado_curso_Leccion;
+    @IsString()
+    nombre_usuario : string
 
 }

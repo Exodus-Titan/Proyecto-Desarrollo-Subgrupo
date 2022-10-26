@@ -12,7 +12,7 @@ import { RegistroLeccion } from "./request leccion/registro.leccion";
 
 export class LeccionControladorAutenticacion {
     constructor(private LeccionServicioAutenticacion : LeccionServicioAutenticacion){}
-
+    /*
     //Create
     @Post('RegistroLeccion')
     registroLeccion(@Body() dto : RegistroLeccion) {
@@ -59,6 +59,7 @@ export class LeccionControladorAutenticacion {
     @Delete('EliminarLeccionComoAdmin')
     eliminarLeccionComoAdmin(@Body() dto : eliminarLeccionComoAdmin){
         return this.LeccionServicioAutenticacion.eliminarLeccionComoAdmin(dto)
-    }*/
+    }
     //Delete
+    */
 }

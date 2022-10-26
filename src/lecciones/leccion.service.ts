@@ -14,6 +14,7 @@ import { RegistroLeccion } from "./request leccion/registro.leccion";
 export class LeccionServicioAutenticacion{
 
     constructor(private base: BaseDeDatosService){}
+    /*
    
     //Crear Leccion
     async registroLeccion(dto: RegistroLeccion) {     
@@ -70,4 +71,5 @@ export class LeccionServicioAutenticacion{
         const leccion_eliminar = await this.base.leccion.delete({where : {id : (await leccion).id}})
         return leccion_eliminar
     }
+    */
 }

@@ -9,7 +9,7 @@ import { ConfigModule } from '@nestjs/config'
 import { NotificacionesModule } from './notificaciones/notificaciones.module';
 
 @Module({
-  imports: [moduloAutenticacion, UsuarioModule, CursosModule, BaseDeDatosModule, ConfigModule.forRoot({isGlobal : true}), NotificacionesModule],
+  imports: [moduloAutenticacion, UsuarioModule, CursosModule, BaseDeDatosModule, ConfigModule.forRoot({isGlobal : true}), NotificacionesModule, CursosModule],
   controllers: [AppController],
   providers: [AppService],
 })

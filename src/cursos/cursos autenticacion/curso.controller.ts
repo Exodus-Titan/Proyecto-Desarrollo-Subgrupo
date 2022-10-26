@@ -3,7 +3,7 @@ import { CursoServicioAutenticacion } from "./curso.service";
 import { CrearCurso, BusquedaTituloCurso, BusquedaCategoriaCurso, BusquedaPalabrasClaveCurso, ModificarTitulo, ModificarDescripcion,  ModificarCategoria, ModificarPalabrasClave, ModificarEstadoCurso, Login, EliminarCursoComoAdmin} from "./curso requests";
 
 
-@Controller('Autenticacion Curso')
+@Controller('curso')
 
 export class CursoControladorAutenticacion {
     constructor(private CursoServicioAutenticacion : CursoServicioAutenticacion){}
@@ -34,6 +34,7 @@ export class CursoControladorAutenticacion {
     BuscarCursoPalabrasClave(@Body() dto : BusquedaPalabrasClaveCurso){
         return this.CursoServicioAutenticacion.BuscarCursoPalabrasClave(dto);
     };
+    /*
 
     //Modificar Titulo del curso
     @Post('ModificarTitulo')
@@ -75,6 +76,6 @@ export class CursoControladorAutenticacion {
     @Delete('EliminarCursoComoAdmin')
     EliminarCursoComoAdmin(@Body() dto : EliminarCursoComoAdmin){
         return this.CursoServicioAutenticacion.EliminarCursoComoAdmin(dto)
-    }
+    }*/
 
 }
