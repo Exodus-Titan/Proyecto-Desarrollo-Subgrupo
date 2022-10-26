@@ -4,10 +4,6 @@ export class BusquedaLeccion {
     
     @IsString()
     @IsNotEmpty()
-    titulo? : string
-
-    constructor(titulo : string){
-        this.titulo = titulo;
-    }
+    titulo : string
 
 }

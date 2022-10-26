@@ -5,7 +5,7 @@ import { ModificarCategoriaLeccion } from "./request leccion/ModificarCategoria.
 import { ModificarDescripcionLeccion } from "./request leccion/ModificarDescripcion.Leccion";
 import { ModificarPalabrasClaveLeccion } from "./request leccion/ModificarPalabrasClave.Leccion";
 import { ModificarTituloLeccion } from "./request leccion/ModificarTitulo.Leccion";
-import { RegistroLeccion } from "./request leccion/registro.leccion";
+import { RegistroLeccion } from "./request leccion/registro.Leccion";
 
 
 @Controller('Autenticacion Leccion')
