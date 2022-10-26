@@ -34,14 +34,21 @@ export class Curso implements ICursos_Y_Lecciones{
     private cambiar_estado(estado: Estado_Curso): void{
         this.estado = estado;
     }
+
+    private eliminar_todos_estudiantes(): void{
+        for(let estudiante of this.estudiantes_inscritos){
+            estudiante.eliminar_curso(this);
+        }
+        this.estudiantes_inscritos = [];
+    }
     
     // Metodos a utilizar
-    public suscribir_usuario(estudiante: Usuario): void{
-        this.estado.inscribir_usuario(estudiante);
+    public suscribir_usuario(estudiante: Usuario): boolean{
+        return this.estado.inscribir_usuario(estudiante);
     }
 
-    public retirar_usuario(estudiante: Usuario): void{
-        this.estado.retirar_usuario(estudiante);
+    public retirar_usuario(estudiante: Usuario): boolean{
+        return this.estado.retirar_usuario(estudiante);
     }
 
     public publicar_leccion(leccion: Leccion): void{
@@ -94,6 +101,7 @@ export class Curso implements ICursos_Y_Lecciones{
     }
 
     public eliminar(): void{
+        this.eliminar_todos_estudiantes();
         this.cambiar_estado(new Curso_Eliminado(this));
     }
 

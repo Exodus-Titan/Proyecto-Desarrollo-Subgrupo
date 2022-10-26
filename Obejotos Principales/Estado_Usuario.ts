@@ -9,8 +9,8 @@ export abstract class Estado_Usuario {
       this.estudiante = estudiante;
     }
 
-    public abstract suscribir_curso(curso: Curso): void;
-    public abstract retirar_curso(curso: Curso): void;
+    public abstract suscribir_curso(curso: Curso): boolean;
+    public abstract retirar_curso(curso: Curso): boolean;
     public abstract publicar_mensaje(mensaje: Mensaje): void;
     public abstract eliminar_mensaje(mensaje: Mensaje): void;
   }

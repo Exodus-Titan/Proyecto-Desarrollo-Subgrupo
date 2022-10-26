@@ -13,7 +13,7 @@ export abstract class Estado_Curso {
     public abstract estado_actual(): String;
     public abstract agregar_leccion(leccion: Leccion): void;
     public abstract retirar_leccion(leccion: Leccion): void;
-    public abstract inscribir_usuario(usuario: Usuario): void;
-    public abstract retirar_usuario(usuario: Usuario): void;
+    public abstract inscribir_usuario(usuario: Usuario): boolean;
+    public abstract retirar_usuario(usuario: Usuario): boolean;
     public abstract publicar_mensaje(mensaje: Mensaje): void;
 }

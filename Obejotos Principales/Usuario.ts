@@ -16,8 +16,13 @@ export abstract class Usuario implements Suscriptor{
         this.email = email;
         this.clave = clave;
     }
+
+    public eliminar_curso(curso: Curso): void{
+        if(this.cursos_inscritos.includes(curso))
+        this.cursos_inscritos.splice(this.cursos_inscritos.indexOf(curso), 1);
+    }
     
-    actualizar(): void {
+    public actualizar(): void {
 
     }
 }

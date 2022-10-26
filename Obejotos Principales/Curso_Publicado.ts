@@ -13,11 +13,13 @@ export class Curso_Publicado extends Estado_Curso {
     retirar_leccion(leccion: Leccion): void {
         this.curso.eliminar_leccion(leccion);
     }
-    inscribir_usuario(usuario: Usuario): void {
+    inscribir_usuario(usuario: Usuario): boolean {
         this.curso.nuevo_estudiante(usuario);
+        return true;
     }
-    retirar_usuario(usuario: Usuario): void {
+    retirar_usuario(usuario: Usuario): boolean {
         this.curso.eliminar_estudainte(usuario);
+        return true;
     }
     public publicar_mensaje(mensaje: Mensaje): void {
         let leccion: Leccion = mensaje.obtener_leccion();
