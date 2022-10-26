@@ -13,11 +13,13 @@ export class Curso_Creado extends Estado_Curso {
     retirar_leccion(leccion: Leccion): void {
         this.curso.eliminar_leccion(leccion);
     }
-    inscribir_usuario(usuario: Usuario): void {
+    inscribir_usuario(usuario: Usuario): boolean {
         console.log('El curso no se encuentra publicado, no se puede suscribir nuevos estudiantes');
+        return false;
     }
-    retirar_usuario(usuario: Usuario): void {
-        this.curso.eliminar_estudainte(usuario);
+    retirar_usuario(usuario: Usuario): boolean {
+        console.log('El curso no se encuentra publicado');
+        return false;
     }
     public publicar_mensaje(mensaje: Mensaje): void {
         console.log('El curso no se encuentra publicado');

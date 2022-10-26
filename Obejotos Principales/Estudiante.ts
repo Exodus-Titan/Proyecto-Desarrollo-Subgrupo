@@ -1,3 +1,4 @@
+import { Curso } from "./Curso";
 import { Estado_Usuario } from "./Estado_Usuario";
 import { Mensaje } from "./Mensaje";
 import { Usuario } from "./Usuario";
@@ -11,7 +12,19 @@ export class Estudiante extends Usuario {
         super(id, nombre_usuario, email, clave);
         this.activar();
     }
-    
+
+    public suscribir_curso(curso: Curso): void{
+        if(this.estado.suscribir_curso(curso)){
+            this.cursos_inscritos.push(curso)
+        }
+    }
+
+    public retirar_curso(curso: Curso): void{
+        if(this.estado.retirar_curso(curso)){
+            this.cursos_inscritos.splice(this.cursos_inscritos.indexOf(curso), 1);
+        }
+    }
+
     public bloquear(): void{
         this.estado = new Usuario_Bloqueado(this);
     }

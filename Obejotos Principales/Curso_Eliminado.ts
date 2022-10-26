@@ -13,11 +13,13 @@ export class Curso_Eliminado extends Estado_Curso {
     retirar_leccion(leccion: Leccion): void {
         console.log('El curso se encuentra eliminado');
     }
-    inscribir_usuario(usuario: Usuario): void {
+    inscribir_usuario(usuario: Usuario): boolean {
         console.log('El curso se encuentra eliminado');
+        return false;
     }
-    retirar_usuario(usuario: Usuario): void {
+    retirar_usuario(usuario: Usuario): boolean {
         console.log('El curso se encuentra eliminado');
+        return false;
     }
     public publicar_mensaje(mensaje: Mensaje): void {
         console.log('El curso se encuentra eliminado');
