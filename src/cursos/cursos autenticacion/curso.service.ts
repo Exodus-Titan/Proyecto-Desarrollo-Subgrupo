@@ -27,8 +27,7 @@ export class CursoServicioAutenticacion{
                     descripcion : dto.descripcion,
                     categoria : dto.categoria,
                     id_profesor : dto.id_profesor,
-                    palabras_clave : dto.palabras_clave,
-                    estado : dto.estado.toString()
+                    palabras_clave : dto.palabras_clave
                 }
         })
                     

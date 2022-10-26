@@ -28,9 +28,4 @@ export class CrearCurso {
     @IsNotEmpty()
     id_profesor : number;
 
-    //estado
-    @IsNotEmpty()
-    @IsEnum(Estado_curso_Leccion)
-    estado : Estado_curso_Leccion;
-
 }
