@@ -53,25 +53,30 @@ export class CursoControladorAutenticacion {
         return this.CursoServicioAutenticacion.ModificarCategoria(dto)
     }
 
-    /* @Post('ModificarPalabrasClave')
-    modificarPalabrasClave(@Body() dto : ModificarPalabrasClave){
-        return this.CursoServicioAutenticacion.modificarPalabrasClave(dto)
+    //Modificar las palabras clave de un curso
+    @Post('ModificarPalabrasClave')
+    ModificarPalabrasClave(@Body() dto : ModificarPalabrasClave){
+        return this.CursoServicioAutenticacion.ModificarPalabrasClave(dto)
     }
 
+    //Modificar el estado del curso
     @Post('ModificarEstadoCurso')
     ModificarEstadoCurso(@Body() dto : ModificarEstadoCurso){
         return this.CursoServicioAutenticacion.ModificarEstadoCurso(dto)
+    }
 
+    //Eliminar Curso desde la cuenta propia (Profesor elimina su curso)
     @Delete('EliminarCursoPropio')
     EliminarCursoPropio(@Body() dto : Login){
         return this.CursoServicioAutenticacion.EliminarCursoPropio(dto)
     }
 
-    @Delete('EliminarCursoComoAdmin')
+    //Eliminar Curso como Administrador
+/*     @Delete('EliminarCursoComoAdmin')
     EliminarCursoComoAdmin(@Body() dto : EliminarCursoComoAdmin){
         return this.CursoServicioAutenticacion.EliminarCursoComoAdmin(dto)
-    }
-
     } */
+
+    }
 
 }

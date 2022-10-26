@@ -1,5 +1,8 @@
 import { ForbiddenException, Injectable } from "@nestjs/common";
 import { BaseDeDatosService } from "src/base_de_datos/base_de_datos.service";
+import { envio } from "src/notificaciones/funciones";
+import { NotificacionesService } from "src/notificaciones/notificaciones.service";
+import { envioDto } from "src/notificaciones/Objetos para notificaciones";
 import { cursoDuplicado, curso_inexistente } "from funciones curso";
 import { CrearCurso, BusquedaTituloCurso, BusquedaCategoriaCurso, BusquedaPalabrasClaveCurso, ModificarTitulo, ModificarDescripcion,  ModificarCategoria, ModificarPalabrasClave, ModificarEstadoCurso, Login, eliminarCursoComoAdmin} from "./curso requests";
 
@@ -7,7 +10,9 @@ import { CrearCurso, BusquedaTituloCurso, BusquedaCategoriaCurso, BusquedaPalabr
 @Injectable({})
 export class CursoServicioAutenticacion{
 
-    constructor(private base: BaseDeDatosService){}
+    constructor(private base: BaseDeDatosService, private envio: NotificacionesService){}
+
+    claveCorreo = this.base.correo.findUnique({where:{correo : 'desarrolloucab2022@gmail.com'}})
    
     //Inicio de sesion del usuario (?)
 
@@ -89,4 +94,41 @@ export class CursoServicioAutenticacion{
     return curso;
     }       
 
+    //Modificar las palabras clave de un curso
+    async ModificarPalabrasClave(dto : ModificarPalabrasClave){ 
+        //iniciar sesion para poder modificar (?)
+    const curso = this.base.curso.update({where : {id : (await curso).id}, data : {palabras_clave : dto.nuevas_palabras_clave}})
+
+    return curso;
+    }
+
+    //Modificar el estado del curso
+    async ModificarEstadoCurso(dto : ModificarEstadoCurso){ 
+            //iniciar sesion para poder modificar (?
+
+/*         const datosEnvio = new envioDto('"Corsi Plataforma"', dto.email, '', '')        //Enviar notificaciones a los estudiantes
+        if(dto.nuevo_estado == '3'){
+            datosEnvio.asunto = 'Se suspendió el curso';                                //Notificacion curso suspendido
+            datosEnvio.mensaje = 'Desafortunadamente se ha suspendido el curso al que estaba subscrito'
+        }else if (dto.nuevo_estado == '4'){
+            datosEnvio.asunto = 'Se eliminó el curso';                                  //Notificacion curso eliminado
+            datosEnvio.mensaje = 'Desafortunadamente se ha eliminado el curso al que estaba subscrito'
+        } */
+
+        curso = this.base.curso.update({where : {id : (await curso).id}, data : {estado : dto.nuevo_estado}})
+        //this.envio.envioMensaje(datosEnvio, (await this.claveCorreo).clave)
+        return curso;
+        }
+
+    //Eliminar Curso desde la cuenta propia (Profesor elimina su curso)
+    async EliminarCursoPropio(dto : Login) {
+            //iniciar sesion para poder modificar (?
+        const curso_eliminado = await this.base.curso.delete({where : {id : (await curso).id}})
+        const datosEnvio = new envioDto('"Corsi Plataforma"', dto.email, 'Eliminación del curso', 'Su curso ha sido eliminado')
+        this.envio.envioMensaje(datosEnvio, (await this.claveCorreo).clave)
+        //return noEnviarClave(curso_eliminado)
+    }
+
+
+    
 }

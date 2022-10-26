@@ -5,3 +5,5 @@ export * from './buscarpalabrasclave.curso' //buscar curso por palabras clave
 export * from './modificartitulo.curso' //modificar el titulo del curso
 export * from './modificardescripcion.curso' //modificar descripcion del curso
 export * from './modificarcategoria.curso' //modificar categoria del curso
+export * from './modificarpalabrasclave.curso' //modificar palabras clave del curso
+export * from './modificarestado.curso' //modificar estado del curso
