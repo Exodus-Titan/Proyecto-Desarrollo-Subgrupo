@@ -1,2 +1,7 @@
 export * from './registro.Leccion'
 export * from './Busqueda.Leccion'
+export * from './ModificarCategoria.Leccion'
+export * from './ModificarDescripcion.Leccion'
+export * from './ModificarPalabrasClave.Leccion'
+export * from './ModificarTitulo.Leccion'
+export * from './inicionsecion.Leccion'

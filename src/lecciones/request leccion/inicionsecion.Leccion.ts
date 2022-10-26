@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString, IsEmail } from "class-validator";
+import { IsNotEmpty, IsString, IsEmail, IsNumberString } from "class-validator";
 
 export class Login{
     @IsNotEmpty()
@@ -8,4 +8,8 @@ export class Login{
     @IsNotEmpty()
     @IsString()
     clave  : string
+
+    @IsNotEmpty()
+    @IsNumberString()
+    id : string
 }

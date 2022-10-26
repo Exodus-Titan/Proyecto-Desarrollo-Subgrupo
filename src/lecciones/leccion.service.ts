@@ -1,38 +1,38 @@
 import { ForbiddenException, Injectable } from "@nestjs/common";
 import { BaseDeDatosService } from "src/base_de_datos/base_de_datos.service";
 import { leccion_inexistente } from "./funcones leccion/leccionInexistente";
-import { BusquedaLeccion } from "./request leccion/Busqueda.Leccion";
-import { ModificarLeccion } from "./request leccion/inicionsecion.Leccion";
-import { ModificarCategoriaLeccion } from "./request leccion/ModificarCategoria.Leccion";
-import { ModificarDescripcionLeccion } from "./request leccion/ModificarDescripcion.Leccion";
-import { ModificarPalabrasClaveLeccion } from "./request leccion/ModificarPalabrasClave.Leccion";
-import { ModificarTituloLeccion } from "./request leccion/ModificarTitulo.Leccion";
-import { RegistroLeccion } from "./request leccion/registro.Leccion";
+import { BusquedaLeccion, ModificarCategoriaLeccion, ModificarDescripcionLeccion, ModificarPalabrasClaveLeccion, ModificarTituloLeccion, RegistroLeccion } from "./request leccion";
 import { servicioAutenticacion } from "src/autenticacion/autenticacion.service";
+import { comprobarAdminOProfActivo, comprobarProfActivo } from "src/cursos/cursos autenticacion/funciones curso";
+
 
 
 @Injectable({})
 export class LeccionServicioAutenticacion{
 
-    constructor(private base: BaseDeDatosService){}
+    constructor(private base: BaseDeDatosService, private sesion : servicioAutenticacion){}
     /*
    
     //Crear Leccion
     async registroLeccion(dto: RegistroLeccion) {     
 
         try{
-            const leccion = await this.base.leccion.create({
-                data : {
-                    titulo : dto.titulo,
-                    descripcion : dto.descripcion,
-                    categoria : dto.categoria,
-                    palabras_clave : dto.palabras_clave,
-                    id_curso : dto.id_curso
-                }
-        })
-                    
-        return leccion;
-
+            const prof = this.sesion.inicioSesion(dto)
+            if (comprobarProfActivo( await (prof))){
+                const leccion = await this.base.leccion.create({
+                    data : {
+                        titulo : dto.titulo,
+                        descripcion : dto.descripcion,
+                        categoria : dto.categoria,
+                        palabras_clave : dto.palabras_clave,
+                        id_curso : dto.id_curso
+                    }
+                })
+                        
+            return leccion;
+            }else{
+                throw new ForbiddenException('El usuario con el que intenta iniciar sesio no es un profesor/administrador o no esta activo actualmente')
+            }
         }
         // Verificar si la leccion está duplicada
         catch(error){
@@ -49,29 +49,50 @@ export class LeccionServicioAutenticacion{
 
     // Modificar titulo de leccion
     async modificarTitulo(dto : ModificarTituloLeccion){     //actualizar
-        const prof = this.sesion.inicioSecion(dto)
+        const prof = this.sesion.inicioSesion(dto)
         let leccion = this.base.leccion.update({where : {id : Number(dto.id)}})
         if (comprobarAdminOProfActivo(await prof, Number(dto.id))){
             leccion = this.base.leccion.update({where : {id : Number(dto.id)}, data : {titulo : dto.titulo_a_cambiar}})
             return leccion  
         }else{
-            throw new ForbiddenException('El usuario con le que esta inicianco sesion no es un profesor/administrador, no esta activo o no es el dueño del curso')
+            throw new ForbiddenException('El usuario con el que esta inicianco sesion no es un profesor/administrador, no esta activo o no es el dueño del curso')
         }
     }
 
+    // Modificar descripcion de leccion
     async modificarDescripcion(dto : ModificarDescripcionLeccion){     //actualizar
-        const leccion = this.base.leccion.update({where : {titulo : (await leccion).titulo}, data : {descripcion : dto.descripcion_a_cambiar}})
-        return leccion  
+        const prof = this.sesion.inicioSesion(dto)
+        let leccion = this.base.leccion.update({where : {id : Number(dto.id)}})
+        if (comprobarAdminOProfActivo(await prof, Number(dto.id))){
+            leccion = this.base.leccion.update({where : {id : Number(dto.id)}, data : {descripcion : dto.descripcion_a_cambiar}})
+            return leccion  
+        }else{
+            throw new ForbiddenException('El usuario con el que esta inicianco sesion no es un profesor/administrador, no esta activo o no es el dueño del curso')
+        }
     }
 
+    // Modificar categoria de leccion
     async modificarCategoria(dto : ModificarCategoriaLeccion){     //actualizar
-        const leccion = this.base.leccion.update({where : {titulo : (await leccion).titulo}, data : {categoria : dto.categoria_a_cambiar}})
-        return leccion  
+        const prof = this.sesion.inicioSesion(dto)
+        let leccion = this.base.leccion.update({where : {id : Number(dto.id)}})
+        if (comprobarAdminOProfActivo(await prof, Number(dto.id))){
+            leccion = this.base.leccion.update({where : {id : Number(dto.id)}, data : {categoria : dto.categoria_a_cambiar}})
+            return leccion  
+        }else{
+            throw new ForbiddenException('El usuario con el que esta inicianco sesion no es un profesor/administrador, no esta activo o no es el dueño del curso')
+        }
     }
 
+    // Modificar palabras clave de leccion
     async modificarPalabrasClave(dto : ModificarPalabrasClaveLeccion){     //actualizar
-        const leccion = this.base.leccion.update({where : {titulo : (await leccion).titulo}, data : {categoria : dto.palabras_clave_a_cambiar}})
-        return leccion  
+        const prof = this.sesion.inicioSesion(dto)
+        let leccion = this.base.leccion.update({where : {id : Number(dto.id)}})
+        if (comprobarAdminOProfActivo(await prof, Number(dto.id))){
+            leccion = this.base.leccion.update({where : {id : Number(dto.id)}, data : {palabras_clave : dto.palabras_clave_a_cambiar}})
+            return leccion  
+        }else{
+            throw new ForbiddenException('El usuario con el que esta inicianco sesion no es un profesor/administrador, no esta activo o no es el dueño del curso')
+        }
     }
 
     async eliminarLeccion(dto : ModificarLeccion) {  //borrar
