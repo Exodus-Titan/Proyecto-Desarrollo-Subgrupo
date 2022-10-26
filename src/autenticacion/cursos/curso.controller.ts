@@ -1,6 +1,6 @@
 import { Controller, Post, Body, Get, Delete } from "@nestjs/common";
 import { CursoServicioAutenticacion } from "./curso.service";
-import { RegistroCurso, BusquedaCurso, Login, eliminarCursoComoAdmin, ModificarTitulo, ModificarDescripcion,  ModificarCategoria, ModificarPalabrasClave, ModificarEstadoCurso} from "./requests curso";
+import { RegistroCurso, BusquedaCurso, ModificarTitulo, ModificarDescripcion,  ModificarCategoria, ModificarPalabrasClave, ModificarEstadoCurso, Login, eliminarCursoComoAdmin} from "./requests curso";
 
 
 @Controller('Autenticacion Curso')
@@ -15,22 +15,13 @@ export class CursoControladorAutenticacion {
         return this.CursoServicioAutenticacion.registroCurso(dto);
     };
     
-    /* @Get('BuscarCurso')
+    //Buscar curso por su titulo
+    @Get('BuscarCurso')
     buscarCurso(@Body() dto : BusquedaCurso){
         return this.CursoServicioAutenticacion.buscarCurso(dto);
     };
 
-    @Delete('EliminarCursoPropio')
-    eliminarCursoPropio(@Body() dto : Login){
-        return this.CursoServicioAutenticacion.eliminarCursoPropio(dto)
-    }
-
-    @Delete('EliminarCursoComoAdmin')
-    eliminarCursoComoAdmin(@Body() dto : eliminarCursoComoAdmin){
-        return this.CursoServicioAutenticacion.eliminarCursoComoAdmin(dto)
-    }
-
-    @Post('ModificarTitulo')
+    /* @Post('ModificarTitulo')
     modificarTitulo(@Body() dto : ModificarTitulo){
         return this.CursoServicioAutenticacion.modificarTitulo(dto)
     }
@@ -53,6 +44,17 @@ export class CursoControladorAutenticacion {
     @Post('modificarEstadoCurso')
     modificarEstadoCurso(@Body() dto : ModificarEstadoCurso){
         return this.CursoServicioAutenticacion.modificarEstadoCurso(dto)
+
+    @Delete('EliminarCursoPropio')
+    eliminarCursoPropio(@Body() dto : Login){
+        return this.CursoServicioAutenticacion.eliminarCursoPropio(dto)
+    }
+
+    @Delete('EliminarCursoComoAdmin')
+    eliminarCursoComoAdmin(@Body() dto : eliminarCursoComoAdmin){
+        return this.CursoServicioAutenticacion.eliminarCursoComoAdmin(dto)
+    }
+
     } */
 
 }

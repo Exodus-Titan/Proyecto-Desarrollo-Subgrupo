@@ -1,7 +1,7 @@
 import { ForbiddenException, Injectable } from "@nestjs/common";
 import { BaseDeDatosService } from "src/base_de_datos/base_de_datos.service";
-//import { cursoDuplicado } from 
-import { RegistroCurso, BusquedaCurso, Login, eliminarCursoComoAdmin, ModificarTitulo, ModificarDescripcion,  ModificarCategoria, ModificarPalabrasClave, ModificarEstadoCurso} from "./requests curso";
+import { cursoDuplicado, curso_inexistente } "from funciones curso";
+import { RegistroCurso, BusquedaCurso, ModificarTitulo, ModificarDescripcion,  ModificarCategoria, ModificarPalabrasClave, ModificarEstadoCurso, Login, eliminarCursoComoAdmin} from "./requests curso";
 
 
 @Injectable({})
@@ -32,5 +32,15 @@ export class CursoServicioAutenticacion{
             throw error;
         } */
 
+        }
     }
+
+    //Buscar el curso por su titulo
+    async buscarCurso(dto : BusquedaCurso){  // Leer
+        const curso = await this.base.curso.findUnique({where : {titulo : dto.titulo}})
+        curso_inexistente(curso, 'No existe ningún curso con el título proporcionado')
+        
+        return curso;
+    }
+
 }
