@@ -34,13 +34,13 @@ export class CursoControladorAutenticacion {
     BuscarCursoPalabrasClave(@Body() dto : BusquedaPalabrasClaveCurso){
         return this.CursoServicioAutenticacion.BuscarCursoPalabrasClave(dto);
     };
-    /*
+    
 
     //Modificar Titulo del curso
     @Post('ModificarTitulo')
     modificarTitulo(@Body() dto : ModificarTitulo){
         return this.CursoServicioAutenticacion.modificarTitulo(dto)
-    }
+    }/*
 
     //Modificar Descripcion del curso
     @Post('ModificarDescripcion')

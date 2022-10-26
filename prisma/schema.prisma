@@ -42,7 +42,6 @@ model Leccion {
   palabras_clave String[]
   curso          Curso    @relation(fields: [id_curso], references: [id])
   id_curso       Int
-  estado         String
 }
 
 model Correo {
