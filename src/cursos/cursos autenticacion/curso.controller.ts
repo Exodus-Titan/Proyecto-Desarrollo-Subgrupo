@@ -40,7 +40,7 @@ export class CursoControladorAutenticacion {
     @Post('ModificarTitulo')
     modificarTitulo(@Body() dto : ModificarTitulo){
         return this.CursoServicioAutenticacion.modificarTitulo(dto)
-    }/*
+    }
 
     //Modificar Descripcion del curso
     @Post('ModificarDescripcion')
@@ -53,18 +53,22 @@ export class CursoControladorAutenticacion {
     ModificarCategoria(@Body() dto : ModificarCategoria){
         return this.CursoServicioAutenticacion.ModificarCategoria(dto)
     }
-
+    
+    /*
     //Modificar las palabras clave de un curso
     @Post('ModificarPalabrasClave')
     ModificarPalabrasClave(@Body() dto : ModificarPalabrasClave){
         return this.CursoServicioAutenticacion.ModificarPalabrasClave(dto)
     }
+    */
 
+    
     //Modificar el estado del curso
     @Post('ModificarEstadoCurso')
     ModificarEstadoCurso(@Body() dto : ModificarEstadoCurso){
         return this.CursoServicioAutenticacion.ModificarEstadoCurso(dto)
     }
+    /*
 
     //Eliminar Curso desde la cuenta propia (Profesor elimina su curso)
     @Delete('EliminarCursoPropio')

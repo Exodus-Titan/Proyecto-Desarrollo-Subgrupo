@@ -3,16 +3,17 @@ import { BaseDeDatosService } from "src/base_de_datos/base_de_datos.service";
 import { envio } from "src/notificaciones/funciones";
 import { NotificacionesService } from "src/notificaciones/notificaciones.service";
 import { envioDto } from "src/notificaciones/Objetos para notificaciones";
-import { esAdmin} from "src/autenticacion/funciones";
-import { comprobarAdminOProfActivo, comprobarProfActivo, cursos_inexistentes, curso_inexistente } from "./funciones curso";
-import { CrearCurso, BusquedaTituloCurso, BusquedaCategoriaCurso, BusquedaPalabrasClaveCurso, ModificarTitulo, ModificarDescripcion,  ModificarCategoria, ModificarPalabrasClave, ModificarEstadoCurso, Login, EliminarCursoComoAdmin} from "./curso requests";
+import { comprobarProfActivo, cursos_inexistentes, login_y_check, obtenerMensajes } from "./funciones curso";
+import { CrearCurso, BusquedaTituloCurso, BusquedaCategoriaCurso, BusquedaPalabrasClaveCurso, ModificarTitulo, ModificarDescripcion,  ModificarCategoria, ModificarPalabrasClave, ModificarEstadoCurso, Login, EliminarCursoComoAdmin, modificar} from "./curso requests";
 import { servicioAutenticacion } from "src/autenticacion/autenticacion.service";
+import { SuscripcionService } from "src/suscripcion/suscripcion.service";
+import { suscripcion } from "src/suscripcion/objetos para suscripcion/suscripcion";
 
 
 @Injectable({})
 export class CursoServicioAutenticacion{
 
-    constructor(private base: BaseDeDatosService, private envio: NotificacionesService, private sesion : servicioAutenticacion){}
+    constructor(private base: BaseDeDatosService, private envio: NotificacionesService, private sesion : servicioAutenticacion, private suscripcion : SuscripcionService){}
 
     claveCorreo = this.base.correo.findUnique({where:{correo : 'desarrolloucab2022@gmail.com'}})
    
@@ -33,6 +34,7 @@ export class CursoServicioAutenticacion{
                         estado : 'creado'
                     }
                 });
+                this.suscripcion.suscribir(new suscripcion(dto.email, dto.clave, curso.id.toString()))
                 return curso;
             }else
                 throw new ForbiddenException('El usuario con el que intenta iniciar sesio no es un profesor/administrador o no esta activo actualmente')
@@ -67,34 +69,36 @@ export class CursoServicioAutenticacion{
     //Modificar Titulo del curso
     async modificarTitulo(dto : ModificarTitulo){ 
         const prof = this.sesion.inicioSesion(dto)
-        let curso = this.base.curso.findUnique({where : {id : Number(dto.id)}})
-        if (comprobarAdminOProfActivo(await prof, Number(dto.id))){
-            curso = this.base.curso.update({where : {id : Number(dto.id)}, data : {titulo : dto.titulo}})
-            return curso;
-        }
-        else
-            throw new ForbiddenException('El usuario con le que esta inicianco sesion no es un profesor/administrador, no esta activo o no es el dueño del curso')
-    
+        let curso = this.base.curso.findUnique({where : {id : Number(dto.id)} })
+        login_y_check(await prof, dto, await curso)
+        curso = this.base.curso.update({where : {id : Number(dto.id)}, data : {titulo : dto.titulo}})
+        return curso;    
     }
     
-    /*
-
+    
+    
     //Modificar descripcion del curso
     async ModificarDescripcion(dto : ModificarDescripcion){ 
-        //iniciar sesion para poder modificar (?)
-    const curso = this.base.curso.update({where : {id : (await curso).id}, data : {descripcion : dto.nueva_descripcion}})
+        const prof = this.sesion.inicioSesion(dto)
+        let curso = this.base.curso.findUnique({where : {id : Number(dto.id)} })
+        login_y_check(await prof, dto, await curso)
+        curso = this.base.curso.update({where : {id : Number(dto.id)}, data : {descripcion : dto.nueva_descripcion}})
 
     return curso;
     }   
+    
 
     //Modificar categoria del curso
     async ModificarCategoria(dto : ModificarCategoria){ 
-        //iniciar sesion para poder modificar (?)
-    const curso = this.base.curso.update({where : {id : (await curso).id}, data : {categoria : dto.nueva_categoria}})
+        const prof = this.sesion.inicioSesion(dto)
+        let curso = this.base.curso.findUnique({where : {id : Number(dto.id)} })
+        login_y_check(await prof, dto, await curso)
+        curso = this.base.curso.update({where : {id : Number(dto.id)}, data : {categoria : dto.nueva_categoria}})
 
     return curso;
-    }       
-
+    }   
+      
+    /*
     //Modificar las palabras clave de un curso
     async ModificarPalabrasClave(dto : ModificarPalabrasClave){ 
         //iniciar sesion para poder modificar (?)
@@ -102,33 +106,33 @@ export class CursoServicioAutenticacion{
 
     return curso;
     }
+    */
 
     //Modificar el estado del curso
     async ModificarEstadoCurso(dto : ModificarEstadoCurso){ 
-            //iniciar sesion para poder modificar (?
+        const prof = this.sesion.inicioSesion(dto)
+        let curso = this.base.curso.findUnique({where : {id : Number(dto.id)} })
+        login_y_check(await prof, dto, await curso)
+        //const datosEnvio = new envioDto('"Corsi Plataforma"', dto.email, '', '')        //Enviar notificaciones a los estudiantes
 
-/*         const datosEnvio = new envioDto('"Corsi Plataforma"', dto.email, '', '')        //Enviar notificaciones a los estudiantes
-        if(dto.nuevo_estado == '3'){
-            datosEnvio.asunto = 'Se suspendió el curso';                                //Notificacion curso suspendido
-            datosEnvio.mensaje = 'Desafortunadamente se ha suspendido el curso al que estaba subscrito'
-        }else if (dto.nuevo_estado == '4'){
-            datosEnvio.asunto = 'Se eliminó el curso';                                  //Notificacion curso eliminado
-            datosEnvio.mensaje = 'Desafortunadamente se ha eliminado el curso al que estaba subscrito'
-        } 
-
-        curso = this.base.curso.update({where : {id : (await curso).id}, data : {estado : dto.nuevo_estado}})
+        curso = this.base.curso.update({where : {id : (await curso).id}, data : {estado : dto.nuevo_estado.toString()}})
         //this.envio.envioMensaje(datosEnvio, (await this.claveCorreo).clave)
         return curso;
         }
+        
 
     //Eliminar Curso desde la cuenta propia (Profesor elimina su curso)
-    async EliminarCursoPropio(dto : Login) {
-            //iniciar sesion para poder modificar (?
+    async EliminarCursoPropio(dto : modificar) {
+        const prof = this.sesion.inicioSesion(dto)
+        let curso = this.base.curso.findUnique({where : {id : Number(dto.id)} })
+        login_y_check(await prof, dto, await curso)
+
         const curso_eliminado = await this.base.curso.delete({where : {id : (await curso).id}})
         const datosEnvio = new envioDto('"Corsi Plataforma"', dto.email, 'Eliminación del curso', 'Su curso ha sido eliminado')
         this.envio.envioMensaje(datosEnvio, (await this.claveCorreo).clave)
         return curso;
     }
+    /*
 
     //Eliminar Curso como Administrador
     async EliminarCursoComoAdmin(dto : EliminarCursoComoAdmin) {
