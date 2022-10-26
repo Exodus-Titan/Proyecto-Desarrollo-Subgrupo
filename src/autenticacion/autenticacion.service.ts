@@ -1,6 +1,7 @@
 import { ForbiddenException, Injectable } from "@nestjs/common";
 import { BaseDeDatosService } from "src/base_de_datos/base_de_datos.service";
 import { envio } from "src/notificaciones/funciones";
+import { NotificacionesService } from "src/notificaciones/notificaciones.service";
 import { envioDto } from "src/notificaciones/Objetos para notificaciones";
 import { noEnviarClave, usuarioDuplicado, usuario_inexistente, esAdmin, convertirABuscar } from "./funciones";
 import { busqueda, Login, Registro, eliminarUsuarioComoAdmin, modificarEmail, ModificarClave, ModificarNombreUsuario, ModificarNombre, ModificarEstado } from "./objetos para las requests";
@@ -8,7 +9,9 @@ import { busqueda, Login, Registro, eliminarUsuarioComoAdmin, modificarEmail, Mo
 @Injectable({})
 export class servicioAutenticacion{
 
-    constructor(private base: BaseDeDatosService){}
+    constructor(private base: BaseDeDatosService, private envio: NotificacionesService){}
+
+    claveCorreo = this.base.correo.findUnique({where:{correo : 'desarrolloucab2022@gmail.com'}})
 
     async registro(dto: Registro) {     //Crear
 
@@ -25,7 +28,7 @@ export class servicioAutenticacion{
             })
         
             const datosEnvio = new envioDto('"Corsi Plataforma"', dto.email, 'Su usuario se ha creado', 'Bienvenido a nuestra plataforma by Corsi')
-            envio(datosEnvio)
+            this.envio.envioMensaje(datosEnvio, (await this.claveCorreo).clave)
 
             return noEnviarClave(usuario)
         }
@@ -58,7 +61,7 @@ export class servicioAutenticacion{
         const usuario = this.inicioSesion(dto)
         const usuarioAborrar = await this.base.usuario.delete({where : {id : (await usuario).id}})
         const datosEnvio = new envioDto('"Corsi Plataforma"', dto.email, 'Su usuario se ha eliminado', 'Esperamos volver a verlo pronto')
-        envio(datosEnvio)
+        this.envio.envioMensaje(datosEnvio, (await this.claveCorreo).clave)
         return noEnviarClave(usuarioAborrar)
     }
 
@@ -69,14 +72,14 @@ export class servicioAutenticacion{
         usuario_inexistente(await comprobacion, 'No hay ninguna cuenta con el nombre de usuario proporcionado asignado')
         const usuarioAborrar = await this.base.usuario.delete({where : {nombre_usuario : dto.nombre_usuario_a_borrar}})
         const datosEnvio = new envioDto('"Corsi Plataforma"', dto.email, 'Su usuario se ha eliminado', 'Esperamos volver a verlo pronto.    Esta accion fue realizada por el administrador ' + (await usuario).nombre_usuario)
-        envio(datosEnvio)
+        this.envio.envioMensaje(datosEnvio, (await this.claveCorreo).clave)
         return noEnviarClave(usuarioAborrar)
     }
 
     async modificarEmail(dto : modificarEmail){     //actualizar
         let usuario = this.inicioSesion(dto)
         const datosEnvio = new envioDto('"Corsi Plataforma"', dto.email + ', ' + dto.email_a_cambiar, 'Cambio de correo electronico', 'Se cambio su correo electronico de '+ dto.email + ' a ' + dto.email_a_cambiar)
-        envio(datosEnvio)
+        this.envio.envioMensaje(datosEnvio, (await this.claveCorreo).clave)
         usuario = this.base.usuario.update({where : {email : (await usuario).email}, data : {email : dto.email_a_cambiar}})
         return usuario  
     }
@@ -85,7 +88,7 @@ export class servicioAutenticacion{
         let usuario = this.inicioSesion(dto)
         usuario = this.base.usuario.update({where : {email : (await usuario).email}, data : {clave : dto.clave_a_cambiar}})
         const datosEnvio = new envioDto('"Corsi Plataforma"', dto.email, 'Se modifico su contraseña', 'Se realizo un cambio de contraseña en su cuenta')
-        envio(datosEnvio)
+        this.envio.envioMensaje(datosEnvio, (await this.claveCorreo).clave)
         return usuario
     }
 
@@ -93,14 +96,14 @@ export class servicioAutenticacion{
         let usuario = this.inicioSesion(dto)
         const datosEnvio = new envioDto('"Corsi Plataforma"', dto.email, 'Modificacion de nombre de usuario', 'Se modifico su nombre de usuario de ' + (await usuario).nombre_usuario + ' a ' + dto.nombre_usuario_a_cambiar)
         usuario = this.base.usuario.update({where : {email : (await usuario).email}, data : {nombre_usuario : dto.nombre_usuario_a_cambiar}})
-        envio(datosEnvio)
+        this.envio.envioMensaje(datosEnvio, (await this.claveCorreo).clave)
         return usuario
     }
 
     async modificarNombre(dto : ModificarNombre){     //actualizar
         let usuario = this.inicioSesion(dto)
         const datosEnvio = new envioDto('"Corsi Plataforma"', dto.email, 'Su nombre fue cambiado', 'Se realizo un cambio de nombre en su cuenta de ' + (await usuario).nombre + ' a ' + dto.nombre_a_cambiar)
-        envio(datosEnvio)
+        this.envio.envioMensaje(datosEnvio, (await this.claveCorreo).clave)
         usuario = this.base.usuario.update({where : {email : (await usuario).email}, data : {nombre : dto.nombre_a_cambiar}})
         return usuario
     }
@@ -119,7 +122,8 @@ export class servicioAutenticacion{
             datosEnvio.mensaje = 'Desafortunadamente se ha desactivado su cuenta por el momento'
         }
         usuario = this.base.usuario.update({where : {email : (await usuario).email}, data : {estado : nuevoEstado}})
-        envio(datosEnvio)
+        this.envio.envioMensaje(datosEnvio, (await this.claveCorreo).clave)
         return usuario
     }
+
 }

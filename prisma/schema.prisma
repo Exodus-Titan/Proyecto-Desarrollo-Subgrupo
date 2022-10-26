@@ -44,3 +44,8 @@ model Leccion {
   id_curso       Int
   estado         String
 }
+
+model Correo {
+  correo String @id
+  clave  String
+}

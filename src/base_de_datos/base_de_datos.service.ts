@@ -15,4 +15,3 @@ export class BaseDeDatosService extends PrismaClient{
     }
 }
 
-//'postgresql://postgres:desarrollo2022@localhost:5432/Corsi_Desarrollo?schema=public'
