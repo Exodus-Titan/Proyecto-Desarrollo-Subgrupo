@@ -1,12 +1,14 @@
 import { Controller, Post, Body, Get, Delete } from "@nestjs/common";
 import { CursoServicioAutenticacion } from "./curso.service";
-import { RegistroCurso, BusquedaCurso, ModificarTitulo, ModificarDescripcion,  ModificarCategoria, ModificarPalabrasClave, ModificarEstadoCurso, Login, eliminarCursoComoAdmin} from "./requests curso";
+import { RegistroCurso, BusquedaTituloCurso, ModificarTitulo, ModificarDescripcion,  ModificarCategoria, ModificarPalabrasClave, ModificarEstadoCurso, Login, eliminarCursoComoAdmin} from "./curso requests";
 
 
 @Controller('Autenticacion Curso')
 
 export class CursoControladorAutenticacion {
     constructor(private CursoServicioAutenticacion : CursoServicioAutenticacion){}
+
+    //Inicio Sesion Usuario (?)
 
     //Crear Curso
     @Post('RegistroCurso')
@@ -17,16 +19,16 @@ export class CursoControladorAutenticacion {
     
     //Buscar curso por su titulo
     @Get('BuscarCurso')
-    buscarCurso(@Body() dto : BusquedaCurso){
+    buscarCurso(@Body() dto : BusquedaTituloCurso){
         return this.CursoServicioAutenticacion.buscarCurso(dto);
     };
 
-    /* @Post('ModificarTitulo')
+    @Post('ModificarTitulo')
     modificarTitulo(@Body() dto : ModificarTitulo){
         return this.CursoServicioAutenticacion.modificarTitulo(dto)
     }
 
-    @Post('ModificarDescripcion')
+    /* @Post('ModificarDescripcion')
     modificarDescripcion(@Body() dto : ModificarDescripcion){
         return this.CursoServicioAutenticacion.modificarDescripcion(dto)
     }
