@@ -40,7 +40,7 @@ export class CursoServicioAutenticacion{
     //Buscar el curso por su titulo
     async buscarCurso(dto : BusquedaTituloCurso){ 
             //iniciar sesion para poder buscar curso (?)
-        const curso = await this.base.curso.findUnique({where : {titulo : dto.titulo}})
+        const curso = await this.base.curso.findMany({where : {titulo : dto.titulo}})
         curso_inexistente(curso, 'No existe ningún curso con el título proporcionado')
         
         return curso;
@@ -49,7 +49,7 @@ export class CursoServicioAutenticacion{
     //Buscar el curso por su categoria
     async BuscarCursoCategoria(dto : BusquedaCategoriaCurso){ 
         //iniciar sesion para poder buscar curso (?)
-    const curso = await this.base.curso.findUnique({where : {categoria : dto.categoria}})
+    const curso = await this.base.curso.findMany({where : {categoria : dto.categoria}})
     curso_inexistente(curso, 'No existe ningún curso que sea de la categoria proporcionada')
     
     return curso;
@@ -58,7 +58,7 @@ export class CursoServicioAutenticacion{
     //Buscar el curso por palabras clave
     async BuscarCursoPalabrasClave(dto : BusquedaPalabrasClaveCurso){ 
         //iniciar sesion para poder buscar curso (?)
-    const curso = await this.base.curso.findUnique({where : {palabras_clave : dto.palabras_clave}})
+    const curso = await this.base.curso.findMany({where : {palabras_clave : dto.palabras_clave}})
     curso_inexistente(curso, 'No existe ningún curso que contenga la(s) palabra(s) clave proporcionada(s)')
     
     return curso;
