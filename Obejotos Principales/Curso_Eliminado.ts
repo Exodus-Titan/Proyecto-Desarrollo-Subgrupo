@@ -4,7 +4,7 @@ import { Usuario } from "./Usuario";
 
 export class Curso_Eliminado extends Estado_Curso {
     estado_actual(): String {
-        return "Creado";
+        return "Eliminado";
     }
     agregar_leccion(leccion: Leccion): void {
         console.log('El curso se encuentra eliminado');
