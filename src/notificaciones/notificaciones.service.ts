@@ -5,9 +5,10 @@ import { envioDto } from './Objetos para notificaciones';
 @Injectable()
 export class NotificacionesService {
 
-    envioMensaje(dto :envioDto): void{
+
+    envioMensaje(dto :envioDto, claveCorreo : string): void{
         try{
-            envio(dto)
+            envio(dto, claveCorreo )
         }
         catch(error){
             throw new ForbiddenException('No se pudo enviar el correo')
