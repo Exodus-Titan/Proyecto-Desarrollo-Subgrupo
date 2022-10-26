@@ -3,8 +3,9 @@ import { BaseDeDatosService } from "src/base_de_datos/base_de_datos.service";
 import { envio } from "src/notificaciones/funciones";
 import { NotificacionesService } from "src/notificaciones/notificaciones.service";
 import { envioDto } from "src/notificaciones/Objetos para notificaciones";
-import { cursoDuplicado, curso_inexistente } "from funciones curso";
-import { CrearCurso, BusquedaTituloCurso, BusquedaCategoriaCurso, BusquedaPalabrasClaveCurso, ModificarTitulo, ModificarDescripcion,  ModificarCategoria, ModificarPalabrasClave, ModificarEstadoCurso, Login, eliminarCursoComoAdmin} from "./curso requests";
+import { esAdmin} from "src/autenticacion/funciones";
+import { cursoDuplicado, curso_inexistente } from "./funciones curso";
+import { CrearCurso, BusquedaTituloCurso, BusquedaCategoriaCurso, BusquedaPalabrasClaveCurso, ModificarTitulo, ModificarDescripcion,  ModificarCategoria, ModificarPalabrasClave, ModificarEstadoCurso, Login, EliminarCursoComoAdmin} from "./curso requests";
 
 
 @Injectable({})
@@ -126,9 +127,19 @@ export class CursoServicioAutenticacion{
         const curso_eliminado = await this.base.curso.delete({where : {id : (await curso).id}})
         const datosEnvio = new envioDto('"Corsi Plataforma"', dto.email, 'Eliminación del curso', 'Su curso ha sido eliminado')
         this.envio.envioMensaje(datosEnvio, (await this.claveCorreo).clave)
-        //return noEnviarClave(curso_eliminado)
+        return curso;
     }
 
-
+    //Eliminar Curso como Administrador
+    async EliminarCursoComoAdmin(dto : EliminarCursoComoAdmin) {
+            // sesion para poder modificar (?
+        esAdmin(await usuario)
+        //const comprobacion = 
+        //curso_inexistente(await comprobacion, 'No hay ningún curso con el título que fue proporcionado')
+        const curso_eliminadoadmin = await this.base.curso.delete({where : {titulo : dto.titulo_curso_eliminado}})
+        const datosEnvio = new envioDto('"Corsi Plataforma"', dto.email, 'Eliminación del curso', 'Su curso ha sido eliminado.    Esta accion fue realizada por el administrador ' + (await usuario).nombre_usuario)
+        this.envio.envioMensaje(datosEnvio, (await this.claveCorreo).clave)
+        return curso;
+    }
     
 }
