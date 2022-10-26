@@ -1,10 +1,10 @@
 import { IsNotEmpty, IsString } from "class-validator";
 import { Login } from "./iniciosesion.curso";
 
-export class ModificarTitulo extends Login{
+export class ModificarDescripcion extends Login{
     
     @IsNotEmpty()
     @IsString()
-    titulo_nuevo : string
+    nueva_descripcion : string
     
 }
