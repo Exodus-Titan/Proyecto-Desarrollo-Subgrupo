@@ -1,3 +1,3 @@
 export interface Suscriptor {
-    actualizar(): void;
+    actualizar(contexto: string): void;
 }

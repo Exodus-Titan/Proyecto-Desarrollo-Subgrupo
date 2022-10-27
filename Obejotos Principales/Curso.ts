@@ -3,13 +3,12 @@ import { Curso_Eliminado } from "./Curso_Eliminado";
 import { Curso_Publicado } from "./Curso_Publicado";
 import { Curso_Suspendido } from "./Curso_Suspendido";
 import { Estado_Curso } from "./Estado_Curso";
-import { ICursos_Y_Lecciones } from "./ICursos_Y_Lecciones";
 import { Leccion } from "./Leccion";
 import { Mensaje } from "./Mensaje";
 import { Profesor } from "./Profesor";
 import { Usuario } from "./usuario";
 
-export class Curso implements ICursos_Y_Lecciones{
+export class Curso{
 
     private id : number; //Temp hacer tipo id (que no pueda ser negativo)
     private titulo : string;

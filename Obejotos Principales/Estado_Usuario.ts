@@ -1,11 +1,11 @@
 import { Curso } from "./Curso";
-import { Estudiante } from "./Estudiante";
 import { Mensaje } from "./Mensaje";
+import { Usuario } from "./Usuario";
 
 export abstract class Estado_Usuario {
-    protected estudiante: Estudiante;
+    protected estudiante: Usuario;
 
-    public constructor(estudiante: Estudiante){
+    public constructor(estudiante: Usuario){
       this.estudiante = estudiante;
     }
 

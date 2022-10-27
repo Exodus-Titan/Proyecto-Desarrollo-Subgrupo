@@ -22,7 +22,7 @@ export abstract class Usuario implements Suscriptor{
         this.cursos_inscritos.splice(this.cursos_inscritos.indexOf(curso), 1);
     }
     
-    public actualizar(): void {
+    public actualizar(contexto: String): void {
 
     }
 }
