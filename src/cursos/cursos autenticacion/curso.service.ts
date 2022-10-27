@@ -3,7 +3,7 @@ import { BaseDeDatosService } from "src/base_de_datos/base_de_datos.service";
 import { envio } from "src/notificaciones/funciones";
 import { NotificacionesService } from "src/notificaciones/notificaciones.service";
 import { envioDto } from "src/notificaciones/Objetos para notificaciones";
-import { comprobarProfActivo, cursos_inexistentes, login_y_check, obtenerMensajes } from "./funciones curso";
+import { comprobarProfActivo, construitEnvio, cursos_inexistentes, curso_inexistente, login_y_check, obtenerMensajes } from "./funciones curso";
 import { CrearCurso, BusquedaTituloCurso, BusquedaCategoriaCurso, BusquedaPalabrasClaveCurso, ModificarTitulo, ModificarDescripcion,  ModificarCategoria, ModificarPalabrasClave, ModificarEstadoCurso, Login, EliminarCursoComoAdmin, modificar} from "./curso requests";
 import { servicioAutenticacion } from "src/autenticacion/autenticacion.service";
 import { SuscripcionService } from "src/suscripcion/suscripcion.service";
@@ -112,11 +112,13 @@ export class CursoServicioAutenticacion{
     async ModificarEstadoCurso(dto : ModificarEstadoCurso){ 
         const prof = this.sesion.inicioSesion(dto)
         let curso = this.base.curso.findUnique({where : {id : Number(dto.id)} })
+        curso_inexistente(await curso, 'EL curso proporcionado no existe')
         login_y_check(await prof, dto, await curso)
         //const datosEnvio = new envioDto('"Corsi Plataforma"', dto.email, '', '')        //Enviar notificaciones a los estudiantes
-
         curso = this.base.curso.update({where : {id : (await curso).id}, data : {estado : dto.nuevo_estado.toString()}})
-        //this.envio.envioMensaje(datosEnvio, (await this.claveCorreo).clave)
+        if((await curso).estudiantes.length != 0){
+            this.envio.envioMensaje(construitEnvio(await this.envio.obtenerCorreoDeUnArray((await curso).estudiantes), obtenerMensajes(dto, (await curso).titulo)), (await this.claveCorreo).clave)
+        }
         return curso;
         }
         

@@ -5,7 +5,7 @@ import { modificar } from "./modificar";
 export class ModificarEstadoCurso extends modificar{
     
     @IsNotEmpty()
-    @IsEnum(Estado_curso_Leccion)
-    nuevo_estado : Estado_curso_Leccion
+    @IsString()
+    nuevo_estado : string
     
 }

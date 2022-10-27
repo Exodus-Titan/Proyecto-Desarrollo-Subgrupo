@@ -5,6 +5,7 @@ import { BaseDeDatosService } from 'src/base_de_datos/base_de_datos.service';
 import { NotificacionesService } from 'src/notificaciones/notificaciones.service';
 import { envioDto } from 'src/notificaciones/Objetos para notificaciones';
 import { comprobarDuplicado } from './funciones para suscripcion/comporobarCursoDuplicado';
+import { usuarioActivo } from './funciones para suscripcion/comprobarUsuarioActivo';
 import { estaPublicado } from './funciones para suscripcion/estaPublicado';
 import { mensaje } from './funciones para suscripcion/mensaje';
 import { curso_inexistente } from './funciones para suscripcion/noExisteElCurso';
@@ -22,9 +23,10 @@ export class SuscripcionService {
         let usuario = this.sesion.inicioSesion(dto)
         let cursos = (await usuario).cursos
         let curso = this.base.curso.findUnique({where : {id : Number(dto.id)}})
+        usuarioActivo(await usuario)
+        curso_inexistente(await curso,'EL curso proporcionado no existe')
         estaPublicado(await curso)
         comprobarDuplicado(await usuario, Number(dto.id))
-        curso_inexistente(await curso,'EL curso proporcionado no existe')
         cursos.push(Number(dto.id))
         if ((await usuario).tipo == 'estudiante'){
             let estudiantes = (await curso).estudiantes
