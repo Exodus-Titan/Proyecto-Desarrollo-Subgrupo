@@ -70,9 +70,13 @@ export class CursoServicioAutenticacion{
     async modificarTitulo(dto : ModificarTitulo){ 
         const prof = this.sesion.inicioSesion(dto)
         let curso = this.base.curso.findUnique({where : {id : Number(dto.id)} })
-        login_y_check(await prof, dto, await curso)
-        curso = this.base.curso.update({where : {id : Number(dto.id)}, data : {titulo : dto.titulo}})
-        return curso;    
+        curso_inexistente(await curso, 'EL curso proporcionado no existe')
+        if (await login_y_check(await prof, dto, await curso) == true){
+            curso = this.base.curso.update({where : {id : Number(dto.id)}, data : {titulo : dto.titulo}})
+            return curso;
+        }
+        else
+            throw new ForbiddenException('El usuario con el que esta inicianco sesion no es un profesor/administrador, no esta activo o no es el dueño del curso')    
     }
     
     
@@ -81,10 +85,13 @@ export class CursoServicioAutenticacion{
     async ModificarDescripcion(dto : ModificarDescripcion){ 
         const prof = this.sesion.inicioSesion(dto)
         let curso = this.base.curso.findUnique({where : {id : Number(dto.id)} })
-        login_y_check(await prof, dto, await curso)
-        curso = this.base.curso.update({where : {id : Number(dto.id)}, data : {descripcion : dto.nueva_descripcion}})
-
-    return curso;
+        curso_inexistente(await curso, 'EL curso proporcionado no existe')
+        if (await login_y_check(await prof, dto, await curso) == true){
+            curso = this.base.curso.update({where : {id : Number(dto.id)}, data : {descripcion : dto.nueva_descripcion}})
+            return curso;
+        }
+        else
+            throw new ForbiddenException('El usuario con el que esta inicianco sesion no es un profesor/administrador, no esta activo o no es el dueño del curso') 
     }   
     
 
@@ -92,10 +99,13 @@ export class CursoServicioAutenticacion{
     async ModificarCategoria(dto : ModificarCategoria){ 
         const prof = this.sesion.inicioSesion(dto)
         let curso = this.base.curso.findUnique({where : {id : Number(dto.id)} })
-        login_y_check(await prof, dto, await curso)
-        curso = this.base.curso.update({where : {id : Number(dto.id)}, data : {categoria : dto.nueva_categoria}})
-
-    return curso;
+        curso_inexistente(await curso, 'EL curso proporcionado no existe')
+        if (await login_y_check(await prof, dto, await curso) == true){
+            curso = this.base.curso.update({where : {id : Number(dto.id)}, data : {categoria : dto.nueva_categoria}})
+            return curso;
+        }
+        else
+            throw new ForbiddenException('El usuario con el que esta inicianco sesion no es un profesor/administrador, no esta activo o no es el dueño del curso') 
     }   
       
     /*
@@ -113,26 +123,34 @@ export class CursoServicioAutenticacion{
         const prof = this.sesion.inicioSesion(dto)
         let curso = this.base.curso.findUnique({where : {id : Number(dto.id)} })
         curso_inexistente(await curso, 'EL curso proporcionado no existe')
-        login_y_check(await prof, dto, await curso)
-        //const datosEnvio = new envioDto('"Corsi Plataforma"', dto.email, '', '')        //Enviar notificaciones a los estudiantes
-        curso = this.base.curso.update({where : {id : (await curso).id}, data : {estado : dto.nuevo_estado.toString()}})
-        if((await curso).estudiantes.length != 0){
-            this.envio.envioMensaje(construitEnvio(await this.envio.obtenerCorreoDeUnArray((await curso).estudiantes), obtenerMensajes(dto, (await curso).titulo)), (await this.claveCorreo).clave)
+        if (await login_y_check(await prof, dto, await curso) == true){
+            //const datosEnvio = new envioDto('"Corsi Plataforma"', dto.email, '', '')        //Enviar notificaciones a los estudiantes
+            curso = this.base.curso.update({where : {id : (await curso).id}, data : {estado : dto.nuevo_estado.toString()}})
+            if((await curso).estudiantes.length != 0){
+                this.envio.envioMensaje(construitEnvio(await this.envio.obtenerCorreoDeUnArray((await curso).estudiantes), obtenerMensajes(dto, (await curso).titulo)), (await this.claveCorreo).clave)
+            }
+            return curso;
         }
-        return curso;
+        else
+            throw new ForbiddenException('El usuario con el que esta inicianco sesion no es un profesor/administrador, no esta activo o no es el dueño del curso') 
         }
-        
 
     //Eliminar Curso desde la cuenta propia (Profesor elimina su curso)
     async EliminarCursoPropio(dto : modificar) {
         const prof = this.sesion.inicioSesion(dto)
         let curso = this.base.curso.findUnique({where : {id : Number(dto.id)} })
-        login_y_check(await prof, dto, await curso)
-
-        const curso_eliminado = await this.base.curso.delete({where : {id : (await curso).id}})
-        const datosEnvio = new envioDto('"Corsi Plataforma"', dto.email, 'Eliminación del curso', 'Su curso ha sido eliminado')
-        this.envio.envioMensaje(datosEnvio, (await this.claveCorreo).clave)
-        return curso;
+        curso_inexistente(await curso, 'EL curso proporcionado no existe')
+        if (await login_y_check(await prof, dto, await curso) == true){
+            const estudiantes = (await curso).estudiantes
+            for (let i = 0; i < estudiantes.length; i++){
+                this.suscripcion.desuscribir(new suscripcion((await this.base.usuario.findUnique({where : {id : estudiantes[i]}})).email, (await this.base.usuario.findUnique({where : {id : estudiantes[i]}})).clave, dto.id))
+            }
+            this.suscripcion.desuscribir(dto)
+            curso = this.base.curso.delete({where : {id : Number(dto.id)}})
+            return curso;
+        }
+        else
+            throw new ForbiddenException('El usuario con el que esta inicianco sesion no es un profesor/administrador, no esta activo o no es el dueño del curso') 
     }
     /*
 

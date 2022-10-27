@@ -28,7 +28,6 @@ export class NotificacionesService {
             let usuario = this.base.usuario.findUnique({where : {id : ids[i]}})
             cadenaDeCorreos = cadenaDeCorreos + (await usuario).email
         }
-        console.log(cadenaDeCorreos)
         return cadenaDeCorreos
     }
     

@@ -25,17 +25,20 @@ export class SuscripcionService {
         let curso = this.base.curso.findUnique({where : {id : Number(dto.id)}})
         usuarioActivo(await usuario)
         curso_inexistente(await curso,'EL curso proporcionado no existe')
-        estaPublicado(await curso)
-        comprobarDuplicado(await usuario, Number(dto.id))
-        cursos.push(Number(dto.id))
-        if ((await usuario).tipo == 'estudiante'){
-            let estudiantes = (await curso).estudiantes
-            estudiantes.push((await usuario).id)
-            curso = this.base.curso.update({where : {id : Number(dto.id)}, data : {estudiantes : estudiantes}})
-        } 
-        usuario = this.base.usuario.update({where : {id : (await usuario).id}, data : {cursos : cursos}})
-        this.envio.envioMensaje(mensaje(new dtoMensaje(await usuario, (await curso).titulo)), (await this.claveCorreo).clave)
-        return noEnviarClave(await usuario)
+        if (estaPublicado(await curso,await  usuario)){
+            comprobarDuplicado(await usuario, Number(dto.id))
+            cursos.push(Number(dto.id))
+            if ((await usuario).tipo == 'estudiante'){
+                let estudiantes = (await curso).estudiantes
+                estudiantes.push((await usuario).id)
+                curso = this.base.curso.update({where : {id : Number(dto.id)}, data : {estudiantes : estudiantes}})
+            } 
+            usuario = this.base.usuario.update({where : {id : (await usuario).id}, data : {cursos : cursos}})
+            this.envio.envioMensaje(mensaje(new dtoMensaje(await usuario, (await curso).titulo)), (await this.claveCorreo).clave)
+            return noEnviarClave(await usuario)
+        }
+        else 
+            throw new ForbiddenException('El curso no esta publicado, no se puede suscribir a este')
     }
 
     async desuscribir(dto : suscripcion){

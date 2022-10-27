@@ -1,6 +1,6 @@
 import { Controller, Post, Body, Get, Delete } from "@nestjs/common";
 import { CursoServicioAutenticacion } from "./curso.service";
-import { CrearCurso, BusquedaTituloCurso, BusquedaCategoriaCurso, BusquedaPalabrasClaveCurso, ModificarTitulo, ModificarDescripcion,  ModificarCategoria, ModificarPalabrasClave, ModificarEstadoCurso, Login, EliminarCursoComoAdmin} from "./curso requests";
+import { CrearCurso, BusquedaTituloCurso, BusquedaCategoriaCurso, BusquedaPalabrasClaveCurso, ModificarTitulo, ModificarDescripcion,  ModificarCategoria, ModificarPalabrasClave, ModificarEstadoCurso, Login, EliminarCursoComoAdmin, modificar} from "./curso requests";
 
 
 @Controller('curso')
@@ -68,13 +68,14 @@ export class CursoControladorAutenticacion {
     ModificarEstadoCurso(@Body() dto : ModificarEstadoCurso){
         return this.CursoServicioAutenticacion.ModificarEstadoCurso(dto)
     }
-    /*
+    
 
     //Eliminar Curso desde la cuenta propia (Profesor elimina su curso)
     @Delete('EliminarCursoPropio')
-    EliminarCursoPropio(@Body() dto : Login){
+    EliminarCursoPropio(@Body() dto : modificar){
         return this.CursoServicioAutenticacion.EliminarCursoPropio(dto)
     }
+    /*
 
     //Eliminar Curso como Administrador
     @Delete('EliminarCursoComoAdmin')
