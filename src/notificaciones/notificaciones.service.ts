@@ -10,7 +10,6 @@ export class NotificacionesService {
 
     envioMensaje(dto :envioDto, claveCorreo : string): void{
         try{
-            console.log(dto.correo)
             envio(dto, claveCorreo )
         }
         catch(error){

@@ -1,6 +1,7 @@
-import { IsNotEmpty, IsString, IsNumber } from "class-validator";
+import { IsNotEmpty, IsString, IsNumber, IsNumberString } from "class-validator";
+import { Login } from "src/autenticacion/objetos para las requests";
 
-export class RegistroLeccion {
+export class RegistroLeccion extends Login{
 
     //Los @ en esta clase son decoradores de validacion 
 
@@ -26,7 +27,7 @@ export class RegistroLeccion {
 
     //id_curso
     @IsNotEmpty()
-    @IsNumber()
-    id_curso : number;
+    @IsNumberString()
+    id_curso : string;
 
 }

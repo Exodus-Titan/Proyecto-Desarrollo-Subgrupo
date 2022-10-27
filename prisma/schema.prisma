@@ -32,6 +32,7 @@ model Curso {
   profesor       Usuario   @relation(fields: [id_profesor], references: [id])
   id_profesor    Int
   estado         String
+  lecciones      Int[]
   Leccion        Leccion[]
 }
 

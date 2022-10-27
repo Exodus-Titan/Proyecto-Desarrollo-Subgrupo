@@ -13,7 +13,6 @@ export async function envio(dto : envioDto, claveCorreo : string): Promise<void>
     },
   });
 
-  transporter.verify().then(()=> {console.log('Rdy 4 sending')});
 
     dto.tipo_notificacion = dto.tipo_notificacion + ' <desarrolloucab2022@gmail.com>'
 

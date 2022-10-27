@@ -136,14 +136,16 @@ export class CursoServicioAutenticacion{
             throw new ForbiddenException('El usuario con el que esta inicianco sesion no es un profesor/administrador, no esta activo o no es el dueño del curso') 
         }
 
+
     //Eliminar Curso desde la cuenta propia (Profesor elimina su curso)
     async EliminarCursoPropio(dto : modificar) {
-        const prof = this.sesion.inicioSesion(dto)
         let curso = this.base.curso.findUnique({where : {id : Number(dto.id)} })
+        const prof = this.sesion.inicioSesion(dto)
         curso_inexistente(await curso, 'EL curso proporcionado no existe')
         propietario(await prof, Number(dto.id))
+        const estudiantes = (await curso).estudiantes
+        curso = this.base.curso.update({where : {id : Number(dto.id)}, data : {estudiantes : []}})
         if (await login_y_check(await prof, dto, await curso) == true){
-            const estudiantes = (await curso).estudiantes
             for (let i = 0; i < estudiantes.length; i++){
                 this.suscripcion.desuscribir(new suscripcion((await this.base.usuario.findUnique({where : {id : estudiantes[i]}})).email, (await this.base.usuario.findUnique({where : {id : estudiantes[i]}})).clave, dto.id))
             }

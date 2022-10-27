@@ -1,8 +1,8 @@
-import { Curso, Usuario } from "@prisma/client";
+import { Curso, Leccion, Usuario } from "@prisma/client";
 import { comprobarProfActivo } from "./comprobarProfActivo";
 import { propietario } from "./propietarioDeCurso";
 
-export function comprobarAdminOProfActivo(persona : Usuario, id : number, curso : Curso): boolean{
+export function comprobarAdminOProfActivo(persona : Usuario, id : number, curso : Curso | Leccion): boolean{
     if ((persona.tipo == 'administrador') && (persona.estado == true) && (curso))
         return true
         

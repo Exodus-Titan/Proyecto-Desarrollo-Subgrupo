@@ -1,13 +1,13 @@
 import { Controller, Post, Body, Get, Delete } from "@nestjs/common";
 import { LeccionServicioAutenticacion } from "./leccion.service";
-import { BusquedaLeccion, ModificarCategoriaLeccion, ModificarDescripcionLeccion, ModificarPalabrasClaveLeccion, ModificarTituloLeccion, RegistroLeccion, EliminarLeccion } from "./request leccion";
+import { BusquedaLeccion, ModificarCategoriaLeccion, ModificarDescripcionLeccion, ModificarPalabrasClaveLeccion, ModificarTituloLeccion, RegistroLeccion, Login } from "./request leccion";
 
 
-@Controller('Autenticacion Leccion')
+@Controller('leccion')
 
 export class LeccionControladorAutenticacion {
     constructor(private LeccionServicioAutenticacion : LeccionServicioAutenticacion){}
-/* 
+ 
     //Create
     @Post('RegistroLeccion')
     registroLeccion(@Body() dto : RegistroLeccion) {
@@ -38,18 +38,21 @@ export class LeccionControladorAutenticacion {
     modificarCategoria(@Body() dto : ModificarCategoriaLeccion){
         return this.LeccionServicioAutenticacion.modificarCategoria(dto)
     }
-
+    /*
     @Post('ModificarPalabrasClave')
     modificarPalabrasClave(@Body() dto : ModificarPalabrasClaveLeccion){
         return this.LeccionServicioAutenticacion.modificarPalabrasClave(dto)
     }
+    */
     //Update
-
+    
     //El profesor elimina la leccion
     @Delete('EliminarLeccionProf')
-    eliminarLeccionProfesor(@Body() dto : EliminarLeccion){
+    eliminarLeccionProfesor(@Body() dto : Login){
         return this.LeccionServicioAutenticacion.eliminarLeccionProfesor(dto)
     }
+
+    /*
 
     //Un administrador elimina la leccion
     @Delete('EliminarLeccionComoAdmin')
