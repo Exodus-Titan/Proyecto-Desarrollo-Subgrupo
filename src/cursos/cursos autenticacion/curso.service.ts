@@ -3,11 +3,12 @@ import { BaseDeDatosService } from "src/base_de_datos/base_de_datos.service";
 import { envio } from "src/notificaciones/funciones";
 import { NotificacionesService } from "src/notificaciones/notificaciones.service";
 import { envioDto } from "src/notificaciones/Objetos para notificaciones";
-import { comprobarProfActivo, construitEnvio, cursos_inexistentes, curso_inexistente, login_y_check, obtenerMensajes } from "./funciones curso";
+import { comprobarProfActivo, construitEnvio, cursos_inexistentes, curso_inexistente, login_y_check, obtenerMensajes, propietario } from "./funciones curso";
 import { CrearCurso, BusquedaTituloCurso, BusquedaCategoriaCurso, BusquedaPalabrasClaveCurso, ModificarTitulo, ModificarDescripcion,  ModificarCategoria, ModificarPalabrasClave, ModificarEstadoCurso, Login, EliminarCursoComoAdmin, modificar} from "./curso requests";
 import { servicioAutenticacion } from "src/autenticacion/autenticacion.service";
 import { SuscripcionService } from "src/suscripcion/suscripcion.service";
 import { suscripcion } from "src/suscripcion/objetos para suscripcion/suscripcion";
+import { usuarioActivo } from "src/suscripcion/funciones para suscripcion/comprobarUsuarioActivo";
 
 
 @Injectable({})
@@ -140,6 +141,7 @@ export class CursoServicioAutenticacion{
         const prof = this.sesion.inicioSesion(dto)
         let curso = this.base.curso.findUnique({where : {id : Number(dto.id)} })
         curso_inexistente(await curso, 'EL curso proporcionado no existe')
+        propietario(await prof, Number(dto.id))
         if (await login_y_check(await prof, dto, await curso) == true){
             const estudiantes = (await curso).estudiantes
             for (let i = 0; i < estudiantes.length; i++){
